@@ -62,10 +62,7 @@
   .reveal-scale { opacity:0; transform:scale(.85); transition:all .9s cubic-bezier(.2,.7,.2,1); }
   .reveal-scale.visible { opacity:1; transform:scale(1); }
 
-  .tilt-card { transform-style:preserve-3d; will-change:transform; transition:transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease; }
-  .tilt-card .tilt-inner { transform:translateZ(30px); }
-
-  #hero3dCanvas { position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.8;z-index:0; touch-action:pan-y; }
+  #hero3dCanvas { position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.85;z-index:0; touch-action:pan-y; }
 
   .word-reveal { display:inline-block; opacity:0; transform:translateY(30px) rotateX(-40deg); animation:wordIn .9s cubic-bezier(.2,.7,.2,1) forwards; }
   @keyframes wordIn { to { opacity:1; transform:translateY(0) rotateX(0); } }
@@ -87,8 +84,6 @@
   .no-scrollbar::-webkit-scrollbar { display:none; }
   .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
 
-  .fade-img { transition:opacity .4s ease-in-out, transform .5s ease; }
-
   .nav-link { position:relative; }
   .nav-link::after { content:'';position:absolute;bottom:4px;left:50%;width:0;height:2px;background:#0284C7;transition:all .3s ease;transform:translateX(-50%);border-radius:99px; }
   .nav-link:hover::after { width:60%; }
@@ -97,13 +92,77 @@
   .section-title-line::after { content:'';position:absolute;bottom:-8px;left:0;height:3px;width:0;background:linear-gradient(90deg,#0284C7,#38BDF8,#CBB58E);border-radius:99px;transition:width 1.2s cubic-bezier(.2,.7,.2,1); }
   .section-title-line.visible::after { width:100%; }
 
-  .glow-ring { box-shadow:0 0 0 0 rgba(14,165,233,.5); animation:glowRing 2.5s infinite; }
   @keyframes glowRing { 0%{box-shadow:0 0 0 0 rgba(14,165,233,.45);}70%{box-shadow:0 0 0 18px rgba(14,165,233,0);}100%{box-shadow:0 0 0 0 rgba(14,165,233,0);} }
+  .glow-ring { animation:glowRing 2.5s infinite; }
+
+  #confettiCanvas { position:fixed; inset:0; pointer-events:none; z-index:9998; }
+
+  .renovated-card { transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease; }
+  .renovated-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 20px 50px -15px rgba(2,132,199,0.35); }
+
+  @keyframes shimmer { 0%{background-position:-200% 0;}100%{background-position:200% 0;} }
+  .shimmer-load { background: linear-gradient(90deg, #e0f2fe 25%, #f6f1e9 50%, #e0f2fe 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+
+  .landmark-card { transition: all .5s cubic-bezier(.2,.7,.2,1); }
+  .landmark-card[data-hidden="true"] { display:none; }
+  .landmark-filter-btn.active { background:#0284C7 !important; color:white !important; border-color:#0284C7 !important; }
 
   @media (max-width: 640px) {
     .reveal { transform:translateY(24px); }
     #viewer3dCanvas { touch-action:none; }
   }
+</style>
+
+<style id="premium-enhancements">
+  :root { color-scheme: light; }
+  html { scroll-padding-top: 88px; }
+  body { text-rendering: optimizeLegibility; }
+  img { background: linear-gradient(135deg,#e0f2fe,#f6f1e9); }
+  :focus-visible { outline: 3px solid #0ea5e9 !important; outline-offset: 3px; }
+
+  .premium-fab {
+    position: fixed; right: max(16px, env(safe-area-inset-right)); z-index: 70;
+    width: 46px; height: 46px; border-radius: 16px; display: grid; place-items: center;
+    color: white; background: linear-gradient(145deg,#0284c7,#0c4a6e);
+    border: 1px solid rgba(255,255,255,.25); box-shadow: 0 10px 30px rgba(2,132,199,.28);
+    transition: transform .25s ease, opacity .25s ease, box-shadow .25s ease;
+  }
+  .premium-fab:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(2,132,199,.38); }
+  .premium-fab.active { background: linear-gradient(145deg,#38bdf8,#0284c7); box-shadow: 0 0 0 3px rgba(56,189,248,.35), 0 10px 30px rgba(2,132,199,.4); }
+
+  #backToTop { bottom: max(18px, env(safe-area-inset-bottom)); opacity: 0; pointer-events: none; transform: translateY(10px); }
+  #backToTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  #soundToggle { bottom: calc(max(18px, env(safe-area-inset-bottom)) + 58px); }
+  #cinemaToggle { bottom: calc(max(18px, env(safe-area-inset-bottom)) + 116px); }
+
+  .premium-toast {
+    position: fixed; left: 50%; bottom: max(22px, env(safe-area-inset-bottom)); z-index: 120;
+    transform: translate(-50%,18px); opacity: 0; pointer-events: none;
+    padding: 11px 17px; border-radius: 14px; color: white; background: rgba(15,23,42,.94);
+    border: 1px solid rgba(56,189,248,.35); box-shadow: 0 12px 40px rgba(0,0,0,.25);
+    font: 500 13px/1.45 'Noto Sans Armenian',sans-serif; text-align: center;
+    transition: opacity .25s ease, transform .25s ease; max-width: min(90vw,460px);
+  }
+  .premium-toast.visible { opacity: 1; transform: translate(-50%,0); }
+
+  body.cinema-mode { filter: brightness(.96); }
+  body.cinema-mode header, body.cinema-mode footer { filter: saturate(.82); }
+
+  .viewer-tool {
+    border:1px solid rgba(56,189,248,.3); background:rgba(14,165,233,.12);
+    color:#e0f2fe; border-radius:11px; padding:8px 11px; font-size:11px; font-weight:700;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .viewer-tool:hover { background:rgba(14,165,233,.28); transform:translateY(-1px); }
+
+  .gallery-thumb { transition: all .25s ease; }
+  .gallery-thumb.active { ring: 3px solid #0ea5e9; transform: scale(1.05); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important;
+      animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+  }
+  @media (max-width:640px) { .premium-fab { width:42px; height:42px; border-radius:14px; right:12px; } }
 </style>
 </head>
 <body class="font-sans antialiased selection:bg-skybrand-200 selection:text-skybrand-900">
@@ -117,16 +176,17 @@
     <path d="M 14 108 H 40 V 128 H 66 V 138 H 88 V 146 H 112 V 138 H 134 V 128 H 160 V 108 H 186 A 94 94 0 0 1 14 108 Z" fill="#F41D1D"/>
   </svg>
   <div class="loader-bar"><div class="loader-bar-fill" id="loaderFill"></div></div>
-  <div class="loader-text">Բեռնվում է</div>
+  <div class="loader-text">Բեռնվում է</div><p class="text-skybrand-200/70 text-[10px] tracking-widest">KAPAN • SYUNIK</p>
 </div>
 
+<canvas id="confettiCanvas"></canvas>
 <div id="scroll-progress"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <header id="mainHeader" class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-sand-200 shadow-sm transition-all duration-300">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-    <a href="#top" class="flex items-center gap-3 group">
+    <a href="#top" class="flex items-center gap-3 group" data-sound="hover">
       <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full shadow-md flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" aria-hidden="true">
         <svg viewBox="0 0 200 200" class="w-full h-full rounded-full">
           <circle cx="100" cy="100" r="98" fill="#0B0B7A"/>
@@ -344,7 +404,7 @@
   </div>
 </footer>
 
-<div id="lightboxModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4" role="dialog" aria-modal="true">
+<div id="lightboxModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-sm p-4" role="dialog" aria-modal="true">
   <div class="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-sand-200">
     <button id="closeModalBtn" type="button" aria-label="Փակել" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md flex items-center justify-center font-bold text-lg transition">✕</button>
     <div id="modalContent" class="flex flex-col"></div>
@@ -368,15 +428,133 @@
     </div>
     <div class="px-5 sm:px-8 py-4 bg-slate-900/50 border-t border-skybrand-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <p class="text-skybrand-200 text-xs sm:text-sm flex-1">Եռաչափ մոդելը կառուցված է համապատասխան ճարտարապետական մանրամասներով։</p>
-      <button onclick="reset3DCamera()" class="ripple-btn px-4 py-2 rounded-xl bg-skybrand-600 hover:bg-skybrand-700 text-white text-xs font-bold transition">Վերականգնել տեսքը</button>
+      <div class="viewer-tools">
+        <button onclick="viewerReset()" class="viewer-tool ripple-btn">🔄 Վերականգնել</button>
+        <button onclick="viewerAutoRotate()" id="viewerAutoRotateBtn" class="viewer-tool ripple-btn">🔄 Ինքնապտույտ</button>
+      </div>
     </div>
   </div>
 </div>
 
+<button id="backToTop" type="button" aria-label="Վերև" class="premium-fab ripple-btn">
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+</button>
+<button id="soundToggle" type="button" aria-label="Ձայն" class="premium-fab ripple-btn" title="Միացնել ձայնը">
+  <svg id="soundOffIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+  <svg id="soundOnIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+</button>
+<button id="cinemaToggle" type="button" aria-label="Կինո ռեժիմ" class="premium-fab ripple-btn" title="Կինո ռեժիմ">
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/></svg>
+</button>
+
+<div id="premiumToast" class="premium-toast" role="status" aria-live="polite"></div>
+
 <script>
-// ============================================================
-// PERFORMANCE DETECTION
-// ============================================================
+/* ============================================================
+   SOUND ENGINE — Web Audio API, no external files
+   ============================================================ */
+class SoundEngine {
+  constructor(){ this.ctx=null; this.master=null; this.enabled=false; this.ambientNodes=null; this.started=false; }
+  init(){
+    if(this.ctx) return;
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = 0.28;
+      this.master.connect(this.ctx.destination);
+    } catch(e){ console.warn('WebAudio unavailable', e); }
+  }
+  toggle(force){
+    this.init();
+    if(!this.ctx) return false;
+    if(this.ctx.state === 'suspended') this.ctx.resume();
+    this.enabled = (typeof force==='boolean') ? force : !this.enabled;
+    if(this.enabled){ this.startAmbient(); this.playChime(); }
+    else { this.stopAmbient(); }
+    return this.enabled;
+  }
+  _tone(freq, dur=0.12, type='sine', vol=0.2, when=0){
+    if(!this.enabled || !this.ctx) return;
+    const t = this.ctx.currentTime + when;
+    const o = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t+dur+0.02);
+  }
+  click(){ this._tone(620, 0.06, 'sine', 0.14); this._tone(920, 0.04, 'sine', 0.08, 0.01); }
+  hover(){ this._tone(1180, 0.04, 'sine', 0.06); }
+  success(){
+    if(!this.enabled||!this.ctx) return;
+    const notes=[523.25, 659.25, 783.99, 1046.5];
+    notes.forEach((f,i)=>this._tone(f, 0.35, 'sine', 0.14, i*0.09));
+    this._tone(1567.98, 0.55, 'sine', 0.1, 0.4);
+  }
+  bell(){
+    if(!this.enabled||!this.ctx) return;
+    // Church bell — rich harmonic series with slow decay
+    const fund = 440;
+    [1, 2.4, 4.2, 6.1, 8.8].forEach((mult, i)=>{
+      const f = fund * mult;
+      const dur = 2.4 - i*0.28;
+      this._tone(f, dur, 'sine', 0.11/(i+1));
+    });
+    this._tone(fund*0.5, 3.0, 'triangle', 0.05);
+  }
+  playChime(){
+    if(!this.enabled||!this.ctx) return;
+    const now = this.ctx.currentTime;
+    [1046.5, 1318.5].forEach((f,i)=>{
+      const o = this.ctx.createOscillator();
+      const g = this.ctx.createGain();
+      o.type='sine'; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001, now+i*0.15);
+      g.gain.exponentialRampToValueAtTime(0.14, now+i*0.15+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, now+i*0.15+0.8);
+      o.connect(g); g.connect(this.master);
+      o.start(now+i*0.15); o.stop(now+i*0.15+0.85);
+    });
+  }
+  startAmbient(){
+    if(!this.ctx || this.ambientNodes) return;
+    // Soft wind: brown noise + lowpass + slow LFO
+    const bufSize = this.ctx.sampleRate * 4;
+    const buf = this.ctx.createBuffer(1, bufSize, this.ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    let last = 0;
+    for(let i=0;i<bufSize;i++){
+      const white = Math.random()*2-1;
+      last = (last + 0.02*white) / 1.02;
+      data[i] = last * 3.5;
+    }
+    const src = this.ctx.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type='lowpass'; filter.frequency.value=380; filter.Q.value=0.7;
+    const lfo = this.ctx.createOscillator();
+    const lfoGain = this.ctx.createGain();
+    lfo.frequency.value = 0.09; lfoGain.gain.value = 120;
+    lfo.connect(lfoGain); lfoGain.connect(filter.frequency);
+    const gain = this.ctx.createGain(); gain.gain.value = 0.04;
+    src.connect(filter); filter.connect(gain); gain.connect(this.master);
+    src.start(); lfo.start();
+    this.ambientNodes = { src, lfo, gain };
+  }
+  stopAmbient(){
+    if(!this.ambientNodes) return;
+    try{ this.ambientNodes.src.stop(); this.ambientNodes.lfo.stop(); }catch(e){}
+    this.ambientNodes = null;
+  }
+}
+const SOUND = new SoundEngine();
+
+/* ============================================================
+   PERFORMANCE DETECTION
+   ============================================================ */
 const PERF = (() => {
   const ua = navigator.userAgent || '';
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) || window.matchMedia('(hover:none) and (pointer:coarse)').matches;
@@ -389,20 +567,32 @@ const PERF = (() => {
     pixelRatio: isMobile ? Math.min(window.devicePixelRatio || 1, 1.6) : Math.min(window.devicePixelRatio || 1, 2),
     shadows: !lowEnd,
     shadowRes: lowEnd ? 512 : 1024,
-    particleCount: isMobile ? 100 : 240,
+    particleCount: isMobile ? 80 : 200,
     antialias: !lowEnd,
     orbitDamping: 0.08,
     texSize: isMobile ? 256 : 512
   };
 })();
 
-// ============================================================
-// LOADING
-// ============================================================
+/* ============================================================
+   TOAST
+   ============================================================ */
+const _toastEl = document.getElementById('premiumToast');
+let _toastTimer = null;
+function toast(msg, dur=2400){
+  _toastEl.textContent = msg;
+  _toastEl.classList.add('visible');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(()=>_toastEl.classList.remove('visible'), dur);
+}
+
+/* ============================================================
+   LOADING
+   ============================================================ */
 let loadProgress = 0;
 const loaderFill = document.getElementById('loaderFill');
 const loaderInterval = setInterval(() => {
-  loadProgress = Math.min(loadProgress + Math.random() * 18, 92);
+  loadProgress = Math.min(loadProgress + Math.random() * 16, 92);
   loaderFill.style.width = loadProgress + '%';
 }, 150);
 window.addEventListener('load', () => {
@@ -411,13 +601,14 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     document.getElementById('page-loader').classList.add('hidden-loader');
     document.body.style.overflow = '';
-  }, 500);
+    if(SOUND.enabled) SOUND.bell();
+  }, 550);
 });
 document.body.style.overflow = 'hidden';
 
-// ============================================================
-// CUSTOM CURSOR
-// ============================================================
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
 if (!PERF.isTouch && window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
   const dot = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
@@ -430,9 +621,9 @@ if (!PERF.isTouch && window.matchMedia('(hover:hover) and (pointer:fine)').match
     requestAnimationFrame(loop);
   })();
   const bindHover = () => {
-    document.querySelectorAll('a, button, .renovated-card, input, textarea').forEach(el => {
+    document.querySelectorAll('a, button, .renovated-card, input, textarea, .landmark-card').forEach(el => {
       if (el._curBound) return; el._curBound = true;
-      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+      el.addEventListener('mouseenter', () => { ring.classList.add('hovered'); SOUND.hover(); });
       el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
     });
   };
@@ -440,18 +631,18 @@ if (!PERF.isTouch && window.matchMedia('(hover:hover) and (pointer:fine)').match
   new MutationObserver(bindHover).observe(document.body, { childList: true, subtree: true });
 }
 
-// ============================================================
-// SCROLL PROGRESS
-// ============================================================
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
 const progressBar = document.getElementById('scroll-progress');
 window.addEventListener('scroll', () => {
   const h = document.documentElement.scrollHeight - window.innerHeight;
   progressBar.style.width = (window.scrollY / h * 100) + '%';
 }, { passive: true });
 
-// ============================================================
-// SCROLL REVEAL
-// ============================================================
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -462,9 +653,9 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
 document.querySelectorAll('[data-reveal], [data-stagger]').forEach(el => revealObserver.observe(el));
 
-// ============================================================
-// COUNTERS
-// ============================================================
+/* ============================================================
+   COUNTERS
+   ============================================================ */
 const counterObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -488,9 +679,9 @@ const counterObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
 
-// ============================================================
-// MAGNETIC + RIPPLE
-// ============================================================
+/* ============================================================
+   MAGNETIC + RIPPLE
+   ============================================================ */
 if (!PERF.isTouch) {
   document.querySelectorAll('.magnetic-btn').forEach(btn => {
     btn.addEventListener('mousemove', e => {
@@ -504,6 +695,7 @@ if (!PERF.isTouch) {
 }
 document.querySelectorAll('.ripple-btn').forEach(btn => {
   btn.addEventListener('click', e => {
+    SOUND.click();
     const r = btn.getBoundingClientRect();
     const s = Math.max(r.width, r.height);
     const ripple = document.createElement('span');
@@ -516,9 +708,62 @@ document.querySelectorAll('.ripple-btn').forEach(btn => {
   });
 });
 
-// ============================================================
-// FALLBACK SVG
-// ============================================================
+/* ============================================================
+   CONFETTI
+   ============================================================ */
+const confettiCanvas = document.getElementById('confettiCanvas');
+const confettiCtx = confettiCanvas.getContext('2d');
+let confettiParticles = [];
+let confettiRunning = false;
+function resizeConfetti(){
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  confettiCanvas.width = innerWidth*dpr;
+  confettiCanvas.height = innerHeight*dpr;
+  confettiCanvas.style.width = innerWidth+'px';
+  confettiCanvas.style.height = innerHeight+'px';
+  confettiCtx.setTransform(dpr,0,0,dpr,0,0);
+}
+resizeConfetti();
+window.addEventListener('resize', resizeConfetti);
+function burstConfetti(n=90){
+  const cx = innerWidth/2, cy = innerHeight/3;
+  const colors = ['#0284C7','#38BDF8','#CBB58E','#FBB936','#F41D1D','#0EA5E9'];
+  for(let i=0;i<n;i++){
+    const a = Math.random()*Math.PI*2;
+    const speed = 4 + Math.random()*9;
+    confettiParticles.push({
+      x: cx, y: cy,
+      vx: Math.cos(a)*speed, vy: Math.sin(a)*speed - 3,
+      life: 1, decay: 0.008 + Math.random()*0.01,
+      size: 5 + Math.random()*6,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      rot: Math.random()*Math.PI, vrot: (Math.random()-0.5)*0.3
+    });
+  }
+  if(!confettiRunning){ confettiRunning = true; requestAnimationFrame(confettiLoop); }
+}
+function confettiLoop(){
+  confettiCtx.clearRect(0,0,innerWidth,innerHeight);
+  for(let i=confettiParticles.length-1;i>=0;i--){
+    const p = confettiParticles[i];
+    p.vy += 0.18; p.vx *= 0.99; p.vy *= 0.99;
+    p.x += p.vx; p.y += p.vy; p.life -= p.decay; p.rot += p.vrot;
+    if(p.life<=0 || p.y>innerHeight+40){ confettiParticles.splice(i,1); continue; }
+    confettiCtx.save();
+    confettiCtx.globalAlpha = Math.max(0, p.life);
+    confettiCtx.translate(p.x, p.y);
+    confettiCtx.rotate(p.rot);
+    confettiCtx.fillStyle = p.color;
+    confettiCtx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+    confettiCtx.restore();
+  }
+  if(confettiParticles.length){ requestAnimationFrame(confettiLoop); }
+  else { confettiRunning = false; }
+}
+
+/* ============================================================
+   FALLBACK SVG
+   ============================================================ */
 function createFallbackIllustration(title, subtitle, variant = 'city') {
   const palettes = {
     city:{sky1:'#BAE6FD',sky2:'#E0F2FE',accent:'#0284C7',sand:'#EFE6D5'},
@@ -532,9 +777,9 @@ function createFallbackIllustration(title, subtitle, variant = 'city') {
   return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
 }
 
-// ============================================================
-// DATA
-// ============================================================
+/* ============================================================
+   DATA
+   ============================================================ */
 const renovatedPlaces = [
   { id:1, badge:"01 • Վարչական կենտրոն", title:"Կապանի համայնքապետարանի շենքը և հարակից հրապարակը", summary:"Ճակատային հատվածի նորոգում, ժամանակակից գեղարվեստական լուսավորություն և սալիկապատված հրապարակ։", details:"Կապանի համայնքապետարանի վարչական շենքն ու հարակից հրապարակը ստացել են նոր, ներկայանալի տեսք։ Թարմացվել է շենքի արտաքին լուսավորությունը, բարեկարգվել են մուտքային հանգույցները, տեղադրվել են նոր նստարաններ և կանաչապատ ծաղկանոցներ։", improvements:["Ճակատային լուսավորություն","Նոր սալիկապատում","Կանաչ գոտիներ"], image:"https://commons.wikimedia.org/wiki/Special:FilePath/Kapan,_Armenia_-_panoramio.jpg?width=900", variant:"city" },
   { id:2, badge:"02 • Հանգստի գոտի", title:"Կապանի կենտրոնական զբոսայգին", summary:"Արդիականացված շատրվաններ, մանկական խաղահրապարակներ, ճեմուղիներ և երեկոյան LED լուսավորություն։", details:"Համայնքապետարանի ծրագրերով հիմնովին վերակառուցվել է քաղաքային կենտրոնական զբոսայգին։ Կառուցվել են գունավոր երաժշտական շատրվաններ, թարմացվել են հետիոտնային ճեմուղիները։", improvements:["Արդի շատրվաններ","Հետիոտնային ճեմուղիներ","LED լուսավորություն"], image:"https://commons.wikimedia.org/wiki/Special:FilePath/Kapan,voghji-center.jpg?width=900", variant:"park" },
@@ -551,55 +796,47 @@ const renovatedPlaces = [
 const sacredLandmarks = [
   { id:"vahanavank", number:"01", category:"Հոգևոր և կրթական կենտրոն • X-XI դարեր", title:"Վահանավանք (Վահանավանքի վանական համալիր)", location:"Կապանից 5 կմ արևմուտք, Տիգրանասար լեռան ստորոտին", shortDesc:"Սյունիքի թագավորության հոգևոր, մշակութային և կրթական գլխավոր կենտրոնը, հիմնադրված 911 թվականին։", fullHistory:"Վահանավանքը միջնադարյան Հայաստանի նշանավոր վանական համալիրներից է։ Այն հիմնադրել է Սյունյաց Գագիկ իշխանի որդին՝ Վահանը։ Համալիրը բաղկացած է Սուրբ Գրիգոր Լուսավորիչ եկեղեցուց (911 թ.), գավթից, սյունասրահից և Սյունյաց թագուհի Շահանդուխտի կողմից 1086 թվականին կառուցված Սուրբ Աստվածածին երկհարկ եկեղեցի-դամբարանից։", architectureNotes:"Վանական համալիրում են ամփոփված Սյունիքի թագավորներ Վասակ Ա-ն, Սմբատ Բ-ն, Գրիգոր Ա-ն և Սենեքերիմը։ Պեղումների արդյունքում հայտնաբերվել են բազմաթիվ վիմագիր արձանագրություններ և խաչքարեր։", highlights:["Հիմնադրում՝ 911 թ.","Սյունյաց արքաների դամբարան","Սբ. Աստվածածին (1086 թ.)"], variant:"church",
     photos:[
-      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/%D5%8E%D5%A1%D5%B0%D5%A1%D5%B6%D5%A1%D5%BE%D5%A1%D5%B6%D6%84_%D5%BE%D5%A1%D5%B6%D5%A1%D5%AF%D5%A1%D5%B6_%D5%B0%D5%A1%D5%B4%D5%A1%D5%AC%D5%AB%D6%80.jpg?width=1000", caption:"Վահանավանքի վանական համալիրի ընդհանուր համայնապատկերը" },
-      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Vahanavank_(35252737694).jpg?width=1000", caption:"Սուրբ Գրիգոր Լուսավորիչ եկեղեցին և գավիթը" },
+      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Vahanavank_(35252737694).jpg?width=1000", caption:"Վահանավանքի վանական համալիրի ընդհանուր համայնապատկերը" },
       { url:"https://commons.wikimedia.org/wiki/Special:FilePath/08_%D5%8E%D5%A1%D5%B0%D5%A1%D5%B6%D5%A1%D5%BE%D5%A1%D5%B6%D6%84_Emma_YSU.jpg?width=1000", caption:"Սուրբ Աստվածածին երկհարկ եկեղեցի-դամբարանը" }
     ]
   },
   { id:"baghaberd", number:"02", category:"Անառիկ լեռնային ամրոց • IV-XII դարեր", title:"Բաղաբերդ ամրոց", location:"Կապանից 14 կմ հյուսիս-արևմուտք, Ողջի գետի ձախ ափի ժայռոտ հրվանդանի վրա", shortDesc:"Սյունիքի թագավորության ամենահզոր ու անառիկ բերդը, XII դարում՝ Սյունյաց թագավորության վերջին մայրաքաղաքը։", fullHistory:"Բաղաբերդը հիշատակվում է IV դարից՝ կապված Սյունյաց իշխան Անդովկ Սյունու և պարսից Շապուհ Բ արքայի դեմ մղված մարտերի հետ։ 1103 թվականին Կապան մայրաքաղաքի ավերումից հետո Սյունիքի արքունիքն ու գանձարանը տեղափոխվեցին Բաղաբերդ։", architectureNotes:"Ամրոցը կառուցված է երեք կողմից ժայռերով պաշտպանված հրվանդանի վրա։ Պաշտպանական համակարգը՝ կրկնակի պարիսպներ, կիսաշրջանաձև բուրգեր, գաղտնուղիներ և ջրամատակարարման ստորգետնյա խողովակաշար։", highlights:["IV դարից","Վերջին մայրաքաղաք","Կրկնակի պարիսպներ"], variant:"fortress",
     photos:[
       { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Baghaberd_Fortress,_Armenia_-_%D4%B2%D5%A1%D5%B2%D5%A1%D5%A2%D5%A5%D6%80%D5%A4_%D5%A1%D5%B4%D6%80%D5%B8%D6%81,_%D5%80%D5%A1%D5%B5%D5%A1%D5%BD%D5%BF%D5%A1%D5%B6_02.jpg?width=1000", caption:"Բաղաբերդ ամրոցի պահպանված պարիսպներն ու բուրգերը" },
-      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/%D4%B2%D5%A1%D5%B2%D5%A1%D5%A2%D5%A5%D6%80%D5%A4_(Gor_Navoyan).jpg?width=1000", caption:"Տեսարան դեպի Բաղաբերդի ժայռոտ բարձունքը" },
-      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/-%D4%B2%D5%A1%D5%B2%D5%A1%D5%A2%D5%A5%D6%80%D5%A4.jpg?width=1000", caption:"Ամրոցի պաշտպանական հատվածները" }
+      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/%D4%B2%D5%A1%D5%B2%D5%A1%D5%A2%D5%A5%D6%80%D5%A4_(Gor_Navoyan).jpg?width=1000", caption:"Տեսարան դեպի Բաղաբերդի ժայռոտ բարձունքը" }
     ]
   },
   { id:"halidzor", number:"03", category:"Ազատագրական պայքարի միջնաբերդ • XVII դար", title:"Հալիձորի բերդ", location:"Կապան քաղաքի հարավարևմտյան բարձունքին, Ողջի գետի աջ ափին", shortDesc:"Դավիթ Բեկի և Մխիթար Սպարապետի ազգային-ազատագրական պայքարի փառապանծ կենտրոնը։", fullHistory:"Հալիձորի բերդը կառուցվել է XVII դարում որպես Հալիձորի Մեծ անապատ, 1720-ականներին վերածվել է Դավիթ Բեկի զորքերի ռազմական շտաբի։ 1727 թվականին այստեղ տեղի ունեցավ նշանավոր Հալիձորի ճակատամարտը։", architectureNotes:"Բերդն ունի անկանոն քառանկյան հատակագիծ՝ ամրացված հզոր պարիսպներով և աշտարակներով։ Ներսում պահպանվել են Սուրբ Մինաս եկեղեցին, զորանոցները, պահեստներն ու դեպի Ողջի գետը տանող գաղտնուղին։", highlights:["Դավիթ Բեկի նստավայր","1727 թ. ճակատամարտ","Սբ. Մինաս եկեղեցի"], variant:"fortress",
     photos:[
       { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Fortress_of_Halidzor.jpg?width=1000", caption:"Հալիձորի բերդի հզոր պարիսպները" },
-      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Halidzor_fortress,_Syunik,_Armenia_-_panoramio_(9).jpg?width=1000", caption:"Բերդի ներքին բակը և պաշտպանական պատերը" },
-      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Halidzor_fortress,_Syunik,_Armenia_-_panoramio_(1).jpg?width=1000", caption:"Հարավային պարիսպը և ռազմավարական դիրքը" }
+      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Halidzor_fortress,_Syunik,_Armenia_-_panoramio_(9).jpg?width=1000", caption:"Բերդի ներքին բակը և պաշտպանական պատերը" }
     ]
   },
   { id:"mashtots", number:"04", category:"Քաղաքային գլխավոր սրբավայր • 1996-2001 թթ.", title:"Սուրբ Մեսրոպ Մաշտոց եկեղեցի (Կապան)", location:"ք. Կապան, Մելիք-Ստեփանյան փողոց", shortDesc:"Անկախության շրջանում Սյունիքում կառուցված առաջին եկեղեցին և Կապանի հոգևոր կյանքի սիրտը։", fullHistory:"Եկեղեցու հիմնարկեքը կատարվել է 1996 թվականի նոյեմբերի 25-ին՝ Գարեգին Ա Կաթողիկոսի օրհնությամբ։ Շինարարությունն իրականացվել է համաժողովրդական հանգանակությամբ՝ ճարտարապետ Արտյոմ Գրիգորյանի նախագծով։ Օծվել է 2001 թվականի դեկտեմբերի 1-ին։", architectureNotes:"Եկեղեցին արտաքուստ ուղղանկյուն, ներքուստ խաչաձև գմբեթավոր կառույց է՝ երեսպատված բաց մանուշակագույն և կաթնագույն մարմարե սալերով։ Ավագ խորանը զարդարված է Տիգրան Հակոբյանի որմնանկարներով։", highlights:["Օծում՝ 2001 թ.","Ճարտ. Արտյոմ Գրիգորյան","Մարմարե երեսպատում"], variant:"church",
     photos:[
       { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Mesrop_Mashtots_Kapan_St._Mesrop_church,_Armenia.jpg?width=1000", caption:"Կապանի Սուրբ Մեսրոպ Մաշտոց եկեղեցին" },
-      { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Kapan,voghji-center.jpg?width=1000", caption:"Եկեղեցու հարակից քաղաքային միջավայրը" },
       { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Khustup_from_Kapan.JPG?width=1000", caption:"Տեսարան դեպի Խուստուփ լեռը" }
     ]
   }
 ];
 
-// ============================================================
-// TEXTURE & GEOMETRY HELPERS (Professional-grade)
-// ============================================================
+/* ============================================================
+   TEXTURE HELPERS (procedural)
+   ============================================================ */
 const TEX_CACHE = {};
-
 function makeStoneTexture(baseHex, opts = {}) {
   const key = 'stone_' + baseHex + '_' + (opts.rows||8) + '_' + (opts.cols||6) + '_' + PERF.texSize;
   if (TEX_CACHE[key]) return TEX_CACHE[key].clone();
   const size = PERF.texSize;
-  const rows = opts.rows || 8;
-  const cols = opts.cols || 6;
+  const rows = opts.rows || 8, cols = opts.cols || 6;
   const variance = opts.variance || 26;
   const cv = document.createElement('canvas');
   cv.width = cv.height = size;
   const ctx = cv.getContext('2d');
   ctx.fillStyle = '#' + baseHex.toString(16).padStart(6, '0');
   ctx.fillRect(0, 0, size, size);
-
   const r0 = (baseHex >> 16) & 0xff, g0 = (baseHex >> 8) & 0xff, b0 = baseHex & 0xff;
   const rowH = size / rows, colW = size / cols;
-
   for (let r = 0; r < rows; r++) {
     const offset = (r % 2) * (colW / 2);
     for (let c = -1; c < cols + 1; c++) {
@@ -610,30 +847,21 @@ function makeStoneTexture(baseHex, opts = {}) {
       const B = Math.max(0, Math.min(255, Math.round(b0 + v)));
       ctx.fillStyle = `rgb(${R},${G},${B})`;
       ctx.fillRect(x + 2, y + 2, colW - 4, rowH - 4);
-      for (let i = 0; i < 22; i++) {
+      for (let i = 0; i < 20; i++) {
         ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.08})`;
         ctx.fillRect(x + 4 + Math.random() * (colW - 8), y + 4 + Math.random() * (rowH - 8), 2, 2);
       }
-      for (let i = 0; i < 8; i++) {
-        ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.06})`;
-        ctx.fillRect(x + 4 + Math.random() * (colW - 8), y + 4 + Math.random() * (rowH - 8), 1, 1);
-      }
     }
   }
-
   ctx.strokeStyle = 'rgba(30,22,15,0.32)';
   ctx.lineWidth = 2;
-  for (let r = 0; r <= rows; r++) {
-    ctx.beginPath(); ctx.moveTo(0, r * rowH); ctx.lineTo(size, r * rowH); ctx.stroke();
-  }
-
+  for (let r = 0; r <= rows; r++) { ctx.beginPath(); ctx.moveTo(0, r * rowH); ctx.lineTo(size, r * rowH); ctx.stroke(); }
   const tex = new THREE.CanvasTexture(cv);
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
   tex.anisotropy = PERF.isMobile ? 2 : 8;
   TEX_CACHE[key] = tex;
   return tex.clone();
 }
-
 function makeGrassTexture() {
   const key = 'grass_' + PERF.texSize;
   if (TEX_CACHE[key]) return TEX_CACHE[key].clone();
@@ -641,13 +869,11 @@ function makeGrassTexture() {
   const cv = document.createElement('canvas');
   cv.width = cv.height = size;
   const ctx = cv.getContext('2d');
-  ctx.fillStyle = '#4a6b3a';
-  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = '#4a6b3a'; ctx.fillRect(0, 0, size, size);
   for (let i = 0; i < 2500; i++) {
-    const x = Math.random() * size, y = Math.random() * size;
     const g = 60 + Math.random() * 80;
     ctx.fillStyle = `rgba(${Math.round(g * 0.7)},${Math.round(g)},${Math.round(g * 0.4)},0.7)`;
-    ctx.fillRect(x, y, 1 + Math.random() * 2, 1 + Math.random() * 2);
+    ctx.fillRect(Math.random() * size, Math.random() * size, 1 + Math.random() * 2, 1 + Math.random() * 2);
   }
   const tex = new THREE.CanvasTexture(cv);
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -655,7 +881,6 @@ function makeGrassTexture() {
   TEX_CACHE[key] = tex;
   return tex.clone();
 }
-
 function makeMarbleTexture(baseHex) {
   const key = 'marble_' + baseHex;
   if (TEX_CACHE[key]) return TEX_CACHE[key].clone();
@@ -664,19 +889,14 @@ function makeMarbleTexture(baseHex) {
   cv.width = cv.height = size;
   const ctx = cv.getContext('2d');
   const r0 = (baseHex >> 16) & 0xff, g0 = (baseHex >> 8) & 0xff, b0 = baseHex & 0xff;
-  ctx.fillStyle = `rgb(${r0},${g0},${b0})`;
-  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = `rgb(${r0},${g0},${b0})`; ctx.fillRect(0, 0, size, size);
   for (let i = 0; i < 40; i++) {
     ctx.strokeStyle = `rgba(${r0 - 30},${g0 - 30},${b0 - 20},${0.15 + Math.random() * 0.15})`;
     ctx.lineWidth = 0.5 + Math.random() * 1.5;
     ctx.beginPath();
     let x = Math.random() * size, y = Math.random() * size;
     ctx.moveTo(x, y);
-    for (let s = 0; s < 8; s++) {
-      x += (Math.random() - 0.5) * 120;
-      y += (Math.random() - 0.5) * 120;
-      ctx.lineTo(x, y);
-    }
+    for (let s = 0; s < 8; s++) { x += (Math.random() - 0.5) * 120; y += (Math.random() - 0.5) * 120; ctx.lineTo(x, y); }
     ctx.stroke();
   }
   const tex = new THREE.CanvasTexture(cv);
@@ -685,7 +905,6 @@ function makeMarbleTexture(baseHex) {
   TEX_CACHE[key] = tex;
   return tex.clone();
 }
-
 function makeWoodTexture(baseHex) {
   const key = 'wood_' + baseHex;
   if (TEX_CACHE[key]) return TEX_CACHE[key].clone();
@@ -694,8 +913,7 @@ function makeWoodTexture(baseHex) {
   cv.width = cv.height = size;
   const ctx = cv.getContext('2d');
   const r0 = (baseHex >> 16) & 0xff, g0 = (baseHex >> 8) & 0xff, b0 = baseHex & 0xff;
-  ctx.fillStyle = `rgb(${r0},${g0},${b0})`;
-  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = `rgb(${r0},${g0},${b0})`; ctx.fillRect(0, 0, size, size);
   for (let i = 0; i < 80; i++) {
     const x = Math.random() * size;
     const v = (Math.random() - 0.5) * 30;
@@ -707,31 +925,24 @@ function makeWoodTexture(baseHex) {
   TEX_CACHE[key] = tex;
   return tex.clone();
 }
-
 function makeStoneMat(hex, opts = {}) {
   const tex = makeStoneTexture(hex, opts);
   const repeat = opts.repeat || 2;
   tex.repeat.set(repeat, repeat);
   return new THREE.MeshStandardMaterial({
-    map: tex,
-    bumpMap: tex,
-    bumpScale: 0.08,
-    roughness: opts.roughness || 0.88,
-    metalness: opts.metalness || 0.02,
+    map: tex, bumpMap: tex, bumpScale: 0.08,
+    roughness: opts.roughness || 0.88, metalness: opts.metalness || 0.02,
     color: opts.tint || 0xffffff
   });
 }
-
 function makeGrassMat() {
   const tex = makeGrassTexture();
   return new THREE.MeshStandardMaterial({ map: tex, roughness: 1, metalness: 0 });
 }
-
 function makeMarbleMat(hex) {
   const tex = makeMarbleTexture(hex);
   return new THREE.MeshStandardMaterial({ map: tex, roughness: 0.55, metalness: 0.08 });
 }
-
 function makeDomeGeo(radius, height, segments = 32) {
   const pts = [];
   const layers = 14;
@@ -744,7 +955,6 @@ function makeDomeGeo(radius, height, segments = 32) {
   }
   return new THREE.LatheGeometry(pts, segments);
 }
-
 function makeArchShape(w, h) {
   const shape = new THREE.Shape();
   const r = w / 2;
@@ -755,23 +965,24 @@ function makeArchShape(w, h) {
   shape.lineTo(-r, 0);
   return shape;
 }
-
 function makeArchWindowGeo(w, h, depth = 0.06) {
   return new THREE.ExtrudeGeometry(makeArchShape(w, h), { depth, bevelEnabled: false });
 }
-
 function makeCross(size = 1) {
   const g = new THREE.Group();
-  const mat = new THREE.MeshStandardMaterial({ color: 0xFBB936, metalness: 0.75, roughness: 0.25, emissive: 0x442200, emissiveIntensity: 0.15 });
+  const mat = new THREE.MeshStandardMaterial({ color: 0xFBB936, metalness: 0.78, roughness: 0.22, emissive: 0x442200, emissiveIntensity: 0.14 });
   const v = new THREE.Mesh(new THREE.BoxGeometry(0.09 * size, 0.6 * size, 0.09 * size), mat);
   const h = new THREE.Mesh(new THREE.BoxGeometry(0.38 * size, 0.09 * size, 0.09 * size), mat);
-  h.position.y = 0.12 * size;
-  const ball = new THREE.Mesh(new THREE.SphereGeometry(0.05 * size, 8, 6), mat);
-  ball.position.y = -0.32 * size;
-  g.add(v, h, ball);
+  h.position.y = 0.14 * size;
+  const h2 = new THREE.Mesh(new THREE.BoxGeometry(0.24 * size, 0.08 * size, 0.08 * size), mat);
+  h2.position.y = 0.24 * size;
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(0.055 * size, 8, 6), mat);
+  ball.position.y = -0.33 * size;
+  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.03 * size, 6, 5), mat);
+  orb.position.y = 0.32 * size;
+  g.add(v, h, h2, ball, orb);
   return g;
 }
-
 function makeCypressTree(height = 1.4) {
   const g = new THREE.Group();
   const trunk = new THREE.Mesh(
@@ -781,14 +992,13 @@ function makeCypressTree(height = 1.4) {
   trunk.position.y = height * 0.175;
   const foliage = new THREE.Mesh(
     new THREE.ConeGeometry(0.28, height * 0.75, 8),
-    new THREE.MeshStandardMaterial({ color: 0x2d4a28, roughness: 0.92, flatShading: false })
+    new THREE.MeshStandardMaterial({ color: 0x2d4a28, roughness: 0.92 })
   );
   foliage.position.y = height * 0.35 + height * 0.375;
   foliage.castShadow = true;
   g.add(trunk, foliage);
   return g;
 }
-
 function makeRocks(count = 6, spread = 3) {
   const g = new THREE.Group();
   const mat = makeStoneMat(0x8a8578, { rows: 3, cols: 2, repeat: 0.5, roughness: 0.95 });
@@ -799,13 +1009,11 @@ function makeRocks(count = 6, spread = 3) {
     const r = 0.5 + Math.random() * spread;
     rock.position.set(Math.cos(a) * r, sz * 0.4, Math.sin(a) * r);
     rock.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-    rock.castShadow = true;
-    rock.receiveShadow = true;
+    rock.castShadow = true; rock.receiveShadow = true;
     g.add(rock);
   }
   return g;
 }
-
 function addCrenellations(group, radius, y, count, mat, size = 0.35) {
   for (let i = 0; i < count; i++) {
     const a = (i / count) * Math.PI * 2;
@@ -817,9 +1025,9 @@ function addCrenellations(group, radius, y, count, mat, size = 0.35) {
   }
 }
 
-// ============================================================
-// 3D MODELS (Professional-grade)
-// ============================================================
+/* ============================================================
+   3D MODEL BUILDERS — enhanced
+   ============================================================ */
 function buildVahanavank() {
   const g = new THREE.Group();
   const stoneMat = makeStoneMat(0xD4C8B0, { rows: 8, cols: 6, repeat: 1.5, variance: 22 });
@@ -828,235 +1036,144 @@ function buildVahanavank() {
   const roofMat = new THREE.MeshStandardMaterial({ color: 0x6B3410, roughness: 0.7, metalness: 0.05 });
   const winMat = new THREE.MeshStandardMaterial({ color: 0x0a1520, roughness: 0.4, metalness: 0.3, emissive: 0x1a2a40, emissiveIntensity: 0.35 });
 
-  // Grass ground
   const ground = new THREE.Mesh(new THREE.CircleGeometry(8, 48), makeGrassMat());
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true;
   g.add(ground);
 
-  // Rocky base under monastery
-  const baseShape = new THREE.Mesh(
-    new THREE.CylinderGeometry(4.2, 4.8, 0.5, 8),
-    makeStoneMat(0x8f8570, { rows: 4, cols: 3, repeat: 1, roughness: 0.95 })
-  );
-  baseShape.position.y = 0.25;
-  baseShape.castShadow = true;
-  baseShape.receiveShadow = true;
-  g.add(baseShape);
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.8, 0.5, 8), makeStoneMat(0x8f8570, { rows: 4, cols: 3, repeat: 1, roughness: 0.95 }));
+  base.position.y = 0.25; base.castShadow = true; base.receiveShadow = true;
+  g.add(base);
 
-  // ===== MAIN CHURCH (Surb Grigor Lusavorich) =====
   const mainChurch = new THREE.Group();
   mainChurch.position.set(0, 0.5, 0);
 
-  // Main body
   const body = new THREE.Mesh(new THREE.BoxGeometry(2.8, 1.8, 2), stoneMat);
-  body.position.y = 0.9;
-  body.castShadow = true;
-  body.receiveShadow = true;
+  body.position.y = 0.9; body.castShadow = true; body.receiveShadow = true;
   mainChurch.add(body);
 
-  // Cornice
   const cornice = new THREE.Mesh(new THREE.BoxGeometry(2.95, 0.15, 2.15), stoneDark);
-  cornice.position.y = 1.85;
-  mainChurch.add(cornice);
+  cornice.position.y = 1.85; mainChurch.add(cornice);
 
-  // Pilasters (vertical stone strips on facade)
   [-1.25, 1.25].forEach(x => {
     const p = new THREE.Mesh(new THREE.BoxGeometry(0.15, 1.7, 0.08), stoneDark);
-    p.position.set(x, 0.95, 1.02);
-    mainChurch.add(p);
+    p.position.set(x, 0.95, 1.02); mainChurch.add(p);
   });
 
-  // Arched windows on facade
-  [-0.8, 0, 0.8].forEach((x, i) => {
-    const archGeo = makeArchWindowGeo(0.35, 0.7);
-    const arch = new THREE.Mesh(archGeo, winMat);
-    arch.position.set(x, 0.5, 1.01);
-    mainChurch.add(arch);
-    // Frame
-    const frameGeo = makeArchWindowGeo(0.5, 0.85);
-    const frame = new THREE.Mesh(frameGeo, stoneDark);
-    frame.position.set(x, 0.45, 1.005);
-    mainChurch.add(frame);
-    arch.position.z = 1.015;
+  [-0.8, 0, 0.8].forEach((x) => {
+    const frame = new THREE.Mesh(makeArchWindowGeo(0.5, 0.85), stoneDark);
+    frame.position.set(x, 0.45, 1.005); mainChurch.add(frame);
+    const arch = new THREE.Mesh(makeArchWindowGeo(0.35, 0.7), winMat);
+    arch.position.set(x, 0.5, 1.015); mainChurch.add(arch);
   });
 
-  // Arched doorway
-  const doorGeo = makeArchWindowGeo(0.6, 1.1);
-  const door = new THREE.Mesh(doorGeo, new THREE.MeshStandardMaterial({ color: 0x3d2410, roughness: 0.85, metalness: 0.05 }));
-  door.position.set(0, 0.5, 1.01);
-  mainChurch.add(door);
   const doorFrame = new THREE.Mesh(makeArchWindowGeo(0.72, 1.2), stoneDark);
-  doorFrame.position.set(0, 0.5, 1.005);
-  mainChurch.add(doorFrame);
-  door.position.z = 1.02;
+  doorFrame.position.set(0, 0.5, 1.005); mainChurch.add(doorFrame);
+  const door = new THREE.Mesh(makeArchWindowGeo(0.6, 1.1), new THREE.MeshStandardMaterial({ color: 0x3d2410, roughness: 0.85 }));
+  door.position.set(0, 0.5, 1.02); mainChurch.add(door);
 
-  // Roof (slight pyramid)
   const roof = new THREE.Mesh(new THREE.BoxGeometry(2.85, 0.1, 2.05), roofMat);
-  roof.position.y = 1.95;
-  roof.castShadow = true;
-  mainChurch.add(roof);
+  roof.position.y = 1.95; roof.castShadow = true; mainChurch.add(roof);
 
-  // Drum
   const drum = new THREE.Mesh(new THREE.CylinderGeometry(0.72, 0.72, 0.55, 16), stoneDark);
-  drum.position.y = 2.28;
-  drum.castShadow = true;
-  mainChurch.add(drum);
+  drum.position.y = 2.28; drum.castShadow = true; mainChurch.add(drum);
 
-  // Drum windows
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2;
     const win = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.3, 0.05), winMat);
     win.position.set(Math.cos(a) * 0.73, 2.28, Math.sin(a) * 0.73);
-    win.rotation.y = -a + Math.PI / 2;
-    mainChurch.add(win);
+    win.rotation.y = -a + Math.PI / 2; mainChurch.add(win);
   }
 
-  // Pointed dome
   const dome = new THREE.Mesh(makeDomeGeo(0.75, 0.85, 20), domeMat);
-  dome.position.y = 2.55;
-  dome.castShadow = true;
-  mainChurch.add(dome);
+  dome.position.y = 2.55; dome.castShadow = true; mainChurch.add(dome);
 
-  // Cross finial
   const cross = makeCross(1.4);
-  cross.position.y = 3.5;
-  mainChurch.add(cross);
+  cross.position.y = 3.5; mainChurch.add(cross);
 
   g.add(mainChurch);
 
-  // ===== GAVIT (Narthex) =====
   const gavit = new THREE.Group();
   gavit.position.set(2.3, 0.5, 0);
-
   const gBody = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.3, 2.2), stoneMat);
-  gBody.position.y = 0.65;
-  gBody.castShadow = true;
-  gBody.receiveShadow = true;
+  gBody.position.y = 0.65; gBody.castShadow = true; gBody.receiveShadow = true;
   gavit.add(gBody);
 
-  // 4 columns at front
   [-0.5, 0.5].forEach(x => {
     const col = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.1, 1.2, 10), stoneDark);
-    col.position.set(x, 0.6, 1.11);
-    col.castShadow = true;
-    gavit.add(col);
-    // Capital
+    col.position.set(x, 0.6, 1.11); col.castShadow = true; gavit.add(col);
     const cap = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.12, 0.22), stoneDark);
-    cap.position.set(x, 1.22, 1.11);
-    gavit.add(cap);
+    cap.position.set(x, 1.22, 1.11); gavit.add(cap);
   });
 
-  // Arches between columns
   for (let i = 0; i < 2; i++) {
-    const archGeo = makeArchWindowGeo(0.7, 0.9, 0.05);
-    const arch = new THREE.Mesh(archGeo, new THREE.MeshStandardMaterial({ color: 0x6b5a3e, roughness: 0.9 }));
-    arch.position.set(-0.5 + i * 0.5, 0.3, 1.15);
-    gavit.add(arch);
+    const arch = new THREE.Mesh(makeArchWindowGeo(0.7, 0.9, 0.05), new THREE.MeshStandardMaterial({ color: 0x6b5a3e, roughness: 0.9 }));
+    arch.position.set(-0.5 + i * 0.5, 0.3, 1.15); gavit.add(arch);
   }
 
-  // Roof
   const gRoof = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.08, 2.25), roofMat);
-  gRoof.position.y = 1.32;
-  gavit.add(gRoof);
+  gRoof.position.y = 1.32; gavit.add(gRoof);
 
-  // Bell tower
   const bt = new THREE.Mesh(new THREE.BoxGeometry(0.55, 1.05, 0.55), stoneDark);
-  bt.position.y = 1.85;
-  bt.castShadow = true;
-  gavit.add(bt);
+  bt.position.y = 1.85; bt.castShadow = true; gavit.add(bt);
 
-  // Arched openings in bell tower
   for (let i = 0; i < 4; i++) {
     const a = (i / 4) * Math.PI * 2;
     const arch = new THREE.Mesh(makeArchWindowGeo(0.18, 0.35), winMat);
     arch.position.set(Math.cos(a) * 0.28, 1.85, Math.sin(a) * 0.28);
-    arch.rotation.y = -a + Math.PI / 2;
-    gavit.add(arch);
+    arch.rotation.y = -a + Math.PI / 2; gavit.add(arch);
   }
 
-  // Pyramid roof of bell tower
   const btRoof = new THREE.Mesh(new THREE.ConeGeometry(0.45, 0.55, 4), roofMat);
-  btRoof.position.y = 2.65;
-  btRoof.rotation.y = Math.PI / 4;
-  btRoof.castShadow = true;
+  btRoof.position.y = 2.65; btRoof.rotation.y = Math.PI / 4; btRoof.castShadow = true;
   gavit.add(btRoof);
 
   const btCross = makeCross(0.8);
-  btCross.position.y = 3.0;
-  gavit.add(btCross);
+  btCross.position.y = 3.0; gavit.add(btCross);
 
   g.add(gavit);
 
-  // ===== SURB ASTVATSATSIN (Two-story church-tomb) =====
   const astv = new THREE.Group();
   astv.position.set(-2.3, 0.5, 0);
-
   const aBody = new THREE.Mesh(new THREE.BoxGeometry(1.4, 2.1, 1.4), stoneMat);
-  aBody.position.y = 1.05;
-  aBody.castShadow = true;
-  aBody.receiveShadow = true;
-  astv.add(aBody);
+  aBody.position.y = 1.05; aBody.castShadow = true; aBody.receiveShadow = true; astv.add(aBody);
 
-  // Cornice between floors
   const aCornice = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.1, 1.5), stoneDark);
-  aCornice.position.y = 1.5;
-  astv.add(aCornice);
+  aCornice.position.y = 1.5; astv.add(aCornice);
 
-  // Arched windows (2 per side)
   [[0, 1.0, 0.71], [0, 0.6, 0.71]].forEach(([x, y, z]) => {
     const w = new THREE.Mesh(makeArchWindowGeo(0.25, 0.45), winMat);
-    w.position.set(x, y, z + 0.01);
-    astv.add(w);
+    w.position.set(x, y, z + 0.01); astv.add(w);
   });
 
-  // Door
   const aDoor = new THREE.Mesh(makeArchWindowGeo(0.5, 0.9), new THREE.MeshStandardMaterial({ color: 0x3d2410, roughness: 0.85 }));
-  aDoor.position.set(0, 0.45, 0.71);
-  astv.add(aDoor);
+  aDoor.position.set(0, 0.45, 0.71); astv.add(aDoor);
 
-  // Roof
   const aRoof = new THREE.Mesh(new THREE.ConeGeometry(1.05, 0.5, 4), roofMat);
-  aRoof.position.y = 2.35;
-  aRoof.rotation.y = Math.PI / 4;
-  aRoof.castShadow = true;
-  astv.add(aRoof);
+  aRoof.position.y = 2.35; aRoof.rotation.y = Math.PI / 4; aRoof.castShadow = true; astv.add(aRoof);
 
-  // Drum + dome
   const aDrum = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.3, 12), stoneDark);
-  aDrum.position.y = 2.75;
-  astv.add(aDrum);
+  aDrum.position.y = 2.75; astv.add(aDrum);
   const aDome = new THREE.Mesh(makeDomeGeo(0.38, 0.45, 16), domeMat);
-  aDome.position.y = 2.9;
-  astv.add(aDome);
+  aDome.position.y = 2.9; astv.add(aDome);
 
   const aCross = makeCross(1);
-  aCross.position.y = 3.55;
-  astv.add(aCross);
+  aCross.position.y = 3.55; astv.add(aCross);
 
   g.add(astv);
 
-  // ===== ENVIRONMENT =====
-  // Steps to church
   for (let i = 0; i < 3; i++) {
     const step = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.1, 0.25 - i * 0.05), stoneDark);
     step.position.set(0, 0.55 + i * 0.06, 1.3 + i * 0.15);
-    step.castShadow = true;
-    step.receiveShadow = true;
-    g.add(step);
+    step.castShadow = true; step.receiveShadow = true; g.add(step);
   }
 
-  // Cypress trees
   [[-3.5, 0, -0.8], [3.8, 0, -1.2], [-2.8, 0, 1.8], [3.2, 0, 1.5]].forEach(([x, , z]) => {
     const tree = makeCypressTree(1.6 + Math.random() * 0.5);
-    tree.position.set(x, 0.5, z);
-    g.add(tree);
+    tree.position.set(x, 0.5, z); g.add(tree);
   });
 
-  // Rocks scattered
   const rocks = makeRocks(8, 3.5);
-  rocks.position.y = 0.5;
-  g.add(rocks);
+  rocks.position.y = 0.5; g.add(rocks);
 
   return g;
 }
@@ -1068,144 +1185,86 @@ function buildBaghaberd() {
   const roofMat = new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.65, metalness: 0.08 });
   const winMat = new THREE.MeshStandardMaterial({ color: 0x0a1520, roughness: 0.4, metalness: 0.3, emissive: 0x1a2a40, emissiveIntensity: 0.35 });
 
-  // Rocky cliff base (deformed cone)
   const hillGeo = new THREE.ConeGeometry(5.5, 2.8, 10, 4);
   const hp = hillGeo.attributes.position;
   for (let i = 0; i < hp.count; i++) {
-    const x = hp.getX(i), y = hp.getY(i), z = hp.getZ(i);
+    const x = hp.getX(i), z = hp.getZ(i);
     const noise = (Math.sin(x * 3) + Math.cos(z * 3)) * 0.12;
-    hp.setX(i, x * (1 + noise));
-    hp.setZ(i, z * (1 + noise));
+    hp.setX(i, x * (1 + noise)); hp.setZ(i, z * (1 + noise));
   }
   hillGeo.computeVertexNormals();
   const hill = new THREE.Mesh(hillGeo, makeStoneMat(0x7a7060, { rows: 5, cols: 4, repeat: 1.5, roughness: 0.95 }));
-  hill.position.y = 0.9;
-  hill.castShadow = true;
-  hill.receiveShadow = true;
+  hill.position.y = 0.9; hill.castShadow = true; hill.receiveShadow = true;
   g.add(hill);
 
-  // Grass ground
   const ground = new THREE.Mesh(new THREE.CircleGeometry(10, 48), makeGrassMat());
-  ground.rotation.x = -Math.PI / 2;
-  ground.position.y = 0;
-  ground.receiveShadow = true;
-  g.add(ground);
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; g.add(ground);
 
-  // Plateau top
   const top = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 2.6, 0.25, 8), stoneDark);
-  top.position.y = 2.4;
-  top.castShadow = true;
-  top.receiveShadow = true;
-  g.add(top);
+  top.position.y = 2.4; top.castShadow = true; top.receiveShadow = true; g.add(top);
 
-  // ===== OUTER WALL RING =====
-  const wallRing = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.3, 2.4, 1.1, 8, 1, true),
-    stoneMat
-  );
-  wallRing.position.y = 3.0;
-  wallRing.castShadow = true;
-  wallRing.receiveShadow = true;
-  g.add(wallRing);
+  const wallRing = new THREE.Mesh(new THREE.CylinderGeometry(2.3, 2.4, 1.1, 8, 1, true), stoneMat);
+  wallRing.position.y = 3.0; wallRing.castShadow = true; wallRing.receiveShadow = true; g.add(wallRing);
 
-  // Wall crenellations
   addCrenellations(g, 2.35, 3.6, 8, stoneDark, 0.42);
   addCrenellations(g, 2.3, 3.6, 16, stoneDark, 0.28);
 
-  // ===== TOWERS =====
-  // Main tower (tallest)
   const tower1 = new THREE.Group();
   tower1.position.set(1.6, 2.5, 0.4);
   const t1Body = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.6, 2.2, 12), stoneMat);
-  t1Body.position.y = 1.1;
-  t1Body.castShadow = true;
-  tower1.add(t1Body);
-  // Cone roof
+  t1Body.position.y = 1.1; t1Body.castShadow = true; tower1.add(t1Body);
   const t1Roof = new THREE.Mesh(new THREE.ConeGeometry(0.72, 0.9, 12), roofMat);
-  t1Roof.position.y = 2.65;
-  t1Roof.castShadow = true;
-  tower1.add(t1Roof);
-  // Flag pole
+  t1Roof.position.y = 2.65; t1Roof.castShadow = true; tower1.add(t1Roof);
   const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.7, 6), new THREE.MeshStandardMaterial({ color: 0x555555, metalness: 0.7, roughness: 0.3 }));
-  pole.position.y = 3.45;
-  tower1.add(pole);
-  // Flag
+  pole.position.y = 3.45; tower1.add(pole);
   const flag = new THREE.Mesh(new THREE.PlaneGeometry(0.35, 0.22), new THREE.MeshStandardMaterial({ color: 0xd41822, side: THREE.DoubleSide, roughness: 0.7 }));
-  flag.position.set(0.19, 3.55, 0);
-  tower1.add(flag);
+  flag.position.set(0.19, 3.55, 0); tower1.add(flag);
   g.add(tower1);
 
-  // Second tower
   const tower2 = new THREE.Group();
   tower2.position.set(-1.4, 2.5, -0.8);
   const t2Body = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.5, 1.7, 10), stoneMat);
-  t2Body.position.y = 0.85;
-  t2Body.castShadow = true;
-  tower2.add(t2Body);
+  t2Body.position.y = 0.85; t2Body.castShadow = true; tower2.add(t2Body);
   const t2Roof = new THREE.Mesh(new THREE.ConeGeometry(0.6, 0.7, 10), roofMat);
-  t2Roof.position.y = 2.05;
-  t2Roof.castShadow = true;
-  tower2.add(t2Roof);
+  t2Roof.position.y = 2.05; t2Roof.castShadow = true; tower2.add(t2Roof);
   g.add(tower2);
 
-  // Third small tower
   const tower3 = new THREE.Group();
   tower3.position.set(0.3, 2.5, -1.7);
   const t3Body = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.4, 1.3, 8), stoneMat);
-  t3Body.position.y = 0.65;
-  t3Body.castShadow = true;
-  tower3.add(t3Body);
+  t3Body.position.y = 0.65; t3Body.castShadow = true; tower3.add(t3Body);
   const t3Roof = new THREE.Mesh(new THREE.ConeGeometry(0.48, 0.55, 8), roofMat);
-  t3Roof.position.y = 1.6;
-  tower3.add(t3Roof);
+  t3Roof.position.y = 1.6; tower3.add(t3Roof);
   g.add(tower3);
 
-  // ===== INNER KEEP =====
   const keep = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.1, 1.2), stoneMat);
-  keep.position.y = 3.0;
-  keep.castShadow = true;
-  keep.receiveShadow = true;
-  g.add(keep);
+  keep.position.y = 3.0; keep.castShadow = true; keep.receiveShadow = true; g.add(keep);
 
-  // Keep windows
   for (let i = 0; i < 4; i++) {
     const a = (i / 4) * Math.PI * 2;
     const win = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.25, 0.05), winMat);
     win.position.set(Math.cos(a) * 0.61, 3.1, Math.sin(a) * 0.61);
-    win.rotation.y = -a + Math.PI / 2;
-    g.add(win);
+    win.rotation.y = -a + Math.PI / 2; g.add(win);
   }
 
-  // Keep cross
   const kCross = makeCross(1);
-  kCross.position.y = 3.85;
-  g.add(kCross);
+  kCross.position.y = 3.85; g.add(kCross);
 
-  // ===== GATEHOUSE =====
   const gate = new THREE.Group();
   gate.position.set(0, 2.5, 2.15);
   const gateFrame = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.2, 0.15), stoneDark);
-  gateFrame.position.y = 0.6;
-  gateFrame.castShadow = true;
-  gate.add(gateFrame);
-  // Arched opening
+  gateFrame.position.y = 0.6; gateFrame.castShadow = true; gate.add(gateFrame);
   const gateArch = new THREE.Mesh(makeArchWindowGeo(0.45, 0.85, 0.2), new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.9 }));
-  gateArch.position.set(0, 0.05, 0.08);
-  gate.add(gateArch);
+  gateArch.position.set(0, 0.05, 0.08); gate.add(gateArch);
   g.add(gate);
 
-  // ===== ENVIRONMENT =====
-  // Trees at base
   [[-4, 0, -2], [4.5, 0, 1.5], [-3.5, 0, 2.5], [3.8, 0, -2.5]].forEach(([x, , z]) => {
     const tree = makeCypressTree(1.3 + Math.random() * 0.4);
-    tree.position.set(x, 0, z);
-    g.add(tree);
+    tree.position.set(x, 0, z); g.add(tree);
   });
 
-  // Rocks
   const rocks = makeRocks(10, 4.5);
   g.add(rocks);
-
   return g;
 }
 
@@ -1217,23 +1276,12 @@ function buildHalidzor() {
   const winMat = new THREE.MeshStandardMaterial({ color: 0x0a1520, roughness: 0.4, metalness: 0.3, emissive: 0x1a2a40, emissiveIntensity: 0.35 });
   const ironMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.7, metalness: 0.5 });
 
-  // Grass ground
   const ground = new THREE.Mesh(new THREE.CircleGeometry(8, 48), makeGrassMat());
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
-  g.add(ground);
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; g.add(ground);
 
-  // Stone terrace
-  const terrace = new THREE.Mesh(
-    new THREE.BoxGeometry(6, 0.35, 5.5),
-    makeStoneMat(0xa89a80, { rows: 4, cols: 3, repeat: 1.2, roughness: 0.95 })
-  );
-  terrace.position.y = 0.175;
-  terrace.receiveShadow = true;
-  terrace.castShadow = true;
-  g.add(terrace);
+  const terrace = new THREE.Mesh(new THREE.BoxGeometry(6, 0.35, 5.5), makeStoneMat(0xa89a80, { rows: 4, cols: 3, repeat: 1.2, roughness: 0.95 }));
+  terrace.position.y = 0.175; terrace.receiveShadow = true; terrace.castShadow = true; g.add(terrace);
 
-  // ===== QUADRILATERAL WALLS =====
   const wallY = 0.35 + 0.75;
   const walls = [
     { x: 0, z: 2.2, w: 5.2, d: 0.5 },
@@ -1243,162 +1291,86 @@ function buildHalidzor() {
   ];
   walls.forEach(w => {
     const wall = new THREE.Mesh(new THREE.BoxGeometry(w.w, 1.5, w.d), stoneMat);
-    wall.position.set(w.x, wallY, w.z);
-    wall.castShadow = true;
-    wall.receiveShadow = true;
+    wall.position.set(w.x, wallY, w.z); wall.castShadow = true; wall.receiveShadow = true;
     g.add(wall);
   });
 
-  // Crenellations along top of walls
   const wallTopY = wallY + 0.75 + 0.2;
-  // Front & back walls crenellations
   for (let i = -2.4; i <= 2.4; i += 0.4) {
     [2.2, -2.2].forEach(z => {
       const cren = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.4, 0.42), stoneDark);
-      cren.position.set(i, wallTopY, z);
-      cren.castShadow = true;
-      g.add(cren);
+      cren.position.set(i, wallTopY, z); cren.castShadow = true; g.add(cren);
     });
   }
-  // Side walls crenellations
   for (let i = -2; i <= 2; i += 0.4) {
     [-2.35, 2.35].forEach(x => {
       const cren = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.4, 0.28), stoneDark);
-      cren.position.set(x, wallTopY, i);
-      cren.castShadow = true;
-      g.add(cren);
+      cren.position.set(x, wallTopY, i); cren.castShadow = true; g.add(cren);
     });
   }
 
-  // ===== CORNER TOWERS =====
   [[-2.35, 2.2], [2.35, 2.2], [-2.35, -2.2], [2.35, -2.2]].forEach(([x, z]) => {
     const tower = new THREE.Group();
     tower.position.set(x, wallY, z);
-
-    // Tower body (cylindrical, extends above walls)
     const tBody = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.6, 2.4, 12), stoneMat);
-    tBody.castShadow = true;
-    tBody.receiveShadow = true;
-    tower.add(tBody);
-
-    // Crenellations ring
+    tBody.castShadow = true; tBody.receiveShadow = true; tower.add(tBody);
     addCrenellations(tower, 0.58, 1.25, 8, stoneDark, 0.28);
-
-    // Pyramid roof
     const roof = new THREE.Mesh(new THREE.ConeGeometry(0.72, 0.8, 4), roofMat);
-    roof.position.y = 1.65;
-    roof.rotation.y = Math.PI / 4;
-    roof.castShadow = true;
-    tower.add(roof);
-
-    // Small cross
+    roof.position.y = 1.65; roof.rotation.y = Math.PI / 4; roof.castShadow = true; tower.add(roof);
     const cross = makeCross(0.6);
-    cross.position.y = 2.3;
-    tower.add(cross);
-
+    cross.position.y = 2.3; tower.add(cross);
     g.add(tower);
   });
 
-  // ===== INNER CHURCH (Surb Minas) =====
   const church = new THREE.Group();
   church.position.set(0.4, 0.35, -0.6);
-
   const cBody = new THREE.Mesh(new THREE.BoxGeometry(1.4, 1.1, 1.1), stoneMat);
-  cBody.position.y = 0.55;
-  cBody.castShadow = true;
-  cBody.receiveShadow = true;
-  church.add(cBody);
-
-  // Cornice
+  cBody.position.y = 0.55; cBody.castShadow = true; cBody.receiveShadow = true; church.add(cBody);
   const cCornice = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.08, 1.2), stoneDark);
-  cCornice.position.y = 1.14;
-  church.add(cCornice);
-
-  // Arched windows
+  cCornice.position.y = 1.14; church.add(cCornice);
   [-0.4, 0.4].forEach(x => {
     const win = new THREE.Mesh(makeArchWindowGeo(0.22, 0.4), winMat);
-    win.position.set(x, 0.65, 0.56);
-    church.add(win);
+    win.position.set(x, 0.65, 0.56); church.add(win);
   });
-
-  // Drum
   const cDrum = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.3, 12), stoneDark);
-  cDrum.position.y = 1.3;
-  church.add(cDrum);
-
-  // Dome
+  cDrum.position.y = 1.3; church.add(cDrum);
   const cDome = new THREE.Mesh(makeDomeGeo(0.45, 0.5, 16), stoneMat);
-  cDome.position.y = 1.45;
-  cDome.castShadow = true;
-  church.add(cDome);
-
-  // Cross
+  cDome.position.y = 1.45; cDome.castShadow = true; church.add(cDome);
   const cCross = makeCross(0.9);
-  cCross.position.y = 2.15;
-  church.add(cCross);
-
+  cCross.position.y = 2.15; church.add(cCross);
   g.add(church);
 
-  // ===== BARRACKS BUILDINGS =====
   const barracks = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.7, 0.6), stoneMat);
-  barracks.position.set(-1.2, 0.7, -1.5);
-  barracks.castShadow = true;
-  barracks.receiveShadow = true;
+  barracks.position.set(-1.2, 0.7, -1.5); barracks.castShadow = true; barracks.receiveShadow = true;
   g.add(barracks);
-
-  // Barracks roof
   const bRoof = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.08, 0.7), roofMat);
-  bRoof.position.set(-1.2, 1.1, -1.5);
-  g.add(bRoof);
+  bRoof.position.set(-1.2, 1.1, -1.5); g.add(bRoof);
 
-  // ===== GATEHOUSE (front entrance) =====
   const gate = new THREE.Group();
   gate.position.set(0, 0.35, 2.2);
-
   const gateHouse = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.3, 0.6), stoneMat);
-  gateHouse.position.y = 0.65;
-  gateHouse.castShadow = true;
-  gate.add(gateHouse);
-
-  // Gate house roof
+  gateHouse.position.y = 0.65; gateHouse.castShadow = true; gate.add(gateHouse);
   const gRoof = new THREE.Mesh(new THREE.ConeGeometry(0.9, 0.5, 4), roofMat);
-  gRoof.position.y = 1.55;
-  gRoof.rotation.y = Math.PI / 4;
-  gate.add(gRoof);
-
-  // Arched gateway opening
+  gRoof.position.y = 1.55; gRoof.rotation.y = Math.PI / 4; gate.add(gRoof);
   const gateArch = new THREE.Mesh(makeArchWindowGeo(0.5, 0.95, 0.62), ironMat);
-  gateArch.position.set(0, 0.1, 0);
-  gate.add(gateArch);
-
-  // Iron door details
+  gateArch.position.set(0, 0.1, 0); gate.add(gateArch);
   for (let i = 0; i < 4; i++) {
     const strip = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.05, 0.02), new THREE.MeshStandardMaterial({ color: 0x3a3a3a, metalness: 0.7, roughness: 0.4 }));
-    strip.position.set(0, 0.25 + i * 0.18, 0.31);
-    gate.add(strip);
+    strip.position.set(0, 0.25 + i * 0.18, 0.31); gate.add(strip);
   }
-
   g.add(gate);
 
-  // Flag on front-left tower
   const flagPole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.7, 6), new THREE.MeshStandardMaterial({ color: 0x555555, metalness: 0.7, roughness: 0.3 }));
-  flagPole.position.set(-2.35, wallY + 2.5, 2.2);
-  g.add(flagPole);
-
+  flagPole.position.set(-2.35, wallY + 2.5, 2.2); g.add(flagPole);
   const flag = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.26), new THREE.MeshStandardMaterial({ color: 0xd41822, side: THREE.DoubleSide, roughness: 0.7 }));
-  flag.position.set(-2.15, wallY + 2.55, 2.2);
-  g.add(flag);
+  flag.position.set(-2.15, wallY + 2.55, 2.2); g.add(flag);
 
-  // ===== ENVIRONMENT =====
   [[-4, 0, -1.5], [4.2, 0, -1], [-3.8, 0, 2], [3.9, 0, 2.2]].forEach(([x, , z]) => {
     const tree = makeCypressTree(1.2 + Math.random() * 0.4);
-    tree.position.set(x, 0, z);
-    g.add(tree);
+    tree.position.set(x, 0, z); g.add(tree);
   });
-
   const rocks = makeRocks(8, 4);
   g.add(rocks);
-
   return g;
 }
 
@@ -1411,58 +1383,30 @@ function buildMashtots() {
   const winMat = new THREE.MeshStandardMaterial({ color: 0x0a1520, roughness: 0.3, metalness: 0.35, emissive: 0x2a3a50, emissiveIntensity: 0.4 });
   const goldMat = new THREE.MeshStandardMaterial({ color: 0xFBB936, metalness: 0.8, roughness: 0.2 });
 
-  // Garden ground
   const ground = new THREE.Mesh(new THREE.CircleGeometry(7, 48), makeGrassMat());
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
-  g.add(ground);
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; g.add(ground);
 
-  // Stone platform
-  const platform = new THREE.Mesh(
-    new THREE.CylinderGeometry(3.5, 3.7, 0.3, 8),
-    lightStone
-  );
-  platform.position.y = 0.15;
-  platform.receiveShadow = true;
-  platform.castShadow = true;
-  g.add(platform);
+  const platform = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.7, 0.3, 8), lightStone);
+  platform.position.y = 0.15; platform.receiveShadow = true; platform.castShadow = true; g.add(platform);
 
-  // ===== MAIN CHURCH BODY (cruciform plan) =====
   const church = new THREE.Group();
   church.position.y = 0.3;
-
-  // Central body
   const central = new THREE.Mesh(new THREE.BoxGeometry(2.2, 2, 2.2), roseStone);
-  central.position.y = 1;
-  central.castShadow = true;
-  central.receiveShadow = true;
-  church.add(central);
+  central.position.y = 1; central.castShadow = true; central.receiveShadow = true; church.add(central);
 
-  // Apse (semicircular rear extension)
-  const apse = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.7, 0.7, 1.8, 12, 1, false, 0, Math.PI),
-    roseStone
-  );
-  apse.position.set(0, 0.9, -1.1);
-  apse.rotation.y = Math.PI / 2;
-  apse.castShadow = true;
-  church.add(apse);
+  const apse = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 1.8, 12, 1, false, 0, Math.PI), roseStone);
+  apse.position.set(0, 0.9, -1.1); apse.rotation.y = Math.PI / 2; apse.castShadow = true; church.add(apse);
 
-  // Cornice
   const cornice = new THREE.Mesh(new THREE.BoxGeometry(2.35, 0.12, 2.35), lightStone);
-  cornice.position.y = 2.05;
-  church.add(cornice);
+  cornice.position.y = 2.05; church.add(cornice);
 
-  // Pilasters on all sides
   [-1.05, 1.05].forEach(x => {
     [-1.05, 1.05].forEach(z => {
       const p = new THREE.Mesh(new THREE.BoxGeometry(0.15, 1.9, 0.15), lightStone);
-      p.position.set(x, 1.05, z);
-      church.add(p);
+      p.position.set(x, 1.05, z); church.add(p);
     });
   });
 
-  // Arched windows on all 4 sides (3 windows per side)
   [[0, 1.11, 0], [0, -1.11, 0], [1.11, 0, Math.PI/2], [-1.11, 0, Math.PI/2]].forEach(([x, z, ry]) => {
     for (let i = -1; i <= 1; i++) {
       const win = new THREE.Mesh(makeArchWindowGeo(0.28, 0.6), winMat);
@@ -1470,141 +1414,85 @@ function buildMashtots() {
       else win.position.set(x > 0 ? 1.11 : -1.11, 0.9, i * 0.55);
       win.rotation.y = ry || (z < 0 ? Math.PI : 0);
       church.add(win);
-      // Frame
       const frame = new THREE.Mesh(makeArchWindowGeo(0.4, 0.75), lightStone);
       frame.position.copy(win.position);
-      frame.position.z = z > 0 ? z - 0.005 : (z < 0 ? z + 0.005 : win.position.z);
       frame.rotation.copy(win.rotation);
       church.add(frame);
-      win.position.add(win.rotation.y === 0 ? new THREE.Vector3(0, 0, z > 0 ? 0.02 : -0.02) : new THREE.Vector3((x > 0 ? 0.02 : -0.02), 0, 0));
     }
   });
 
-  // Roof
   const roof = new THREE.Mesh(new THREE.BoxGeometry(2.25, 0.12, 2.25), roofMat);
-  roof.position.y = 2.15;
-  roof.castShadow = true;
-  church.add(roof);
+  roof.position.y = 2.15; roof.castShadow = true; church.add(roof);
 
-  // Drum
   const drum = new THREE.Mesh(new THREE.CylinderGeometry(0.82, 0.85, 0.75, 20), lightStone);
-  drum.position.y = 2.55;
-  drum.castShadow = true;
-  church.add(drum);
+  drum.position.y = 2.55; drum.castShadow = true; church.add(drum);
 
-  // Drum windows (arched, 8 of them)
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2;
     const win = new THREE.Mesh(makeArchWindowGeo(0.16, 0.4), winMat);
     win.position.set(Math.cos(a) * 0.83, 2.5, Math.sin(a) * 0.83);
-    win.rotation.y = -a + Math.PI / 2;
-    church.add(win);
+    win.rotation.y = -a + Math.PI / 2; church.add(win);
   }
 
-  // Dome
   const dome = new THREE.Mesh(makeDomeGeo(0.88, 0.95, 24), domeMat);
-  dome.position.y = 2.92;
-  dome.castShadow = true;
-  church.add(dome);
+  dome.position.y = 2.92; dome.castShadow = true; church.add(dome);
 
-  // Dome apex finial
   const finial = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 6), goldMat);
-  finial.position.y = 3.92;
-  church.add(finial);
+  finial.position.y = 3.92; church.add(finial);
 
-  // Cross
   const cross = makeCross(1.3);
-  cross.position.y = 4.15;
-  church.add(cross);
+  cross.position.y = 4.15; church.add(cross);
 
-  // ===== ENTRANCE PORTAL (main facade) =====
   const portal = new THREE.Group();
   portal.position.set(0, 0, 1.12);
-
-  // Portal frame
   const portalFrame = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.4, 0.15), lightStone);
-  portalFrame.position.y = 0.7;
-  portal.add(portalFrame);
-
-  // Arched door
+  portalFrame.position.y = 0.7; portal.add(portalFrame);
   const portalDoor = new THREE.Mesh(makeArchWindowGeo(0.55, 1.1, 0.1), new THREE.MeshStandardMaterial({ color: 0x3d2410, roughness: 0.7 }));
-  portalDoor.position.set(0, 0.05, 0.08);
-  portal.add(portalDoor);
-
+  portalDoor.position.set(0, 0.05, 0.08); portal.add(portalDoor);
   church.add(portal);
 
   g.add(church);
 
-  // ===== TWIN BELL TOWERS (flanking entrance) =====
   [-1.9, 1.9].forEach(x => {
     const tower = new THREE.Group();
     tower.position.set(x, 0.3, 1.3);
-
     const tBody = new THREE.Mesh(new THREE.BoxGeometry(0.9, 2.9, 0.9), roseStone);
-    tBody.position.y = 1.45;
-    tBody.castShadow = true;
-    tBody.receiveShadow = true;
-    tower.add(tBody);
-
-    // Cornice
+    tBody.position.y = 1.45; tBody.castShadow = true; tBody.receiveShadow = true; tower.add(tBody);
     const tCornice = new THREE.Mesh(new THREE.BoxGeometry(1, 0.1, 1), lightStone);
-    tCornice.position.y = 2.95;
-    tower.add(tCornice);
-
-    // Arched openings (bell openings) near top
+    tCornice.position.y = 2.95; tower.add(tCornice);
     for (let i = 0; i < 4; i++) {
       const a = (i / 4) * Math.PI * 2;
       const win = new THREE.Mesh(makeArchWindowGeo(0.22, 0.55), winMat);
       win.position.set(Math.cos(a) * 0.46, 2.55, Math.sin(a) * 0.46);
-      win.rotation.y = -a + Math.PI / 2;
-      tower.add(win);
+      win.rotation.y = -a + Math.PI / 2; tower.add(win);
     }
-
-    // Drum
     const tDrum = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.3, 12), lightStone);
-    tDrum.position.y = 3.2;
-    tower.add(tDrum);
-
-    // Dome
+    tDrum.position.y = 3.2; tower.add(tDrum);
     const tDome = new THREE.Mesh(makeDomeGeo(0.45, 0.5, 16), domeMat);
-    tDome.position.y = 3.35;
-    tDome.castShadow = true;
-    tower.add(tDome);
-
-    // Cross
+    tDome.position.y = 3.35; tDome.castShadow = true; tower.add(tDome);
     const tCross = makeCross(0.9);
-    tCross.position.y = 4.0;
-    tower.add(tCross);
-
+    tCross.position.y = 4.0; tower.add(tCross);
     g.add(tower);
   });
 
-  // ===== ENVIRONMENT =====
-  // Steps to entrance
   for (let i = 0; i < 3; i++) {
     const step = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.1, 0.3 - i * 0.06), lightStone);
     step.position.set(0, 0.3 + i * 0.1, 1.9 + i * 0.2);
-    step.castShadow = true;
-    step.receiveShadow = true;
-    g.add(step);
+    step.castShadow = true; step.receiveShadow = true; g.add(step);
   }
 
-  // Cypress trees flanking entrance
   [[-2.8, 0, 2.4], [2.8, 0, 2.4]].forEach(([x, , z]) => {
     const tree = makeCypressTree(1.5);
-    tree.position.set(x, 0.3, z);
-    g.add(tree);
+    tree.position.set(x, 0.3, z); g.add(tree);
   });
 
-  // Decorative flower bushes
   const bushMat = new THREE.MeshStandardMaterial({ color: 0x7a4a4a, roughness: 0.9 });
   const bushMat2 = new THREE.MeshStandardMaterial({ color: 0x4a7a4a, roughness: 0.9 });
   for (let i = 0; i < 10; i++) {
     const a = (i / 10) * Math.PI * 2;
     const bush = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 6), i % 2 ? bushMat : bushMat2);
     bush.position.set(Math.cos(a) * 3, 0.4, Math.sin(a) * 3);
-    bush.castShadow = true;
-    g.add(bush);
+    bush.castShadow = true; g.add(bush);
   }
 
   return g;
@@ -1617,32 +1505,33 @@ const landmark3DMap = {
   mashtots: { build: buildMashtots, title: 'Սբ. Մեսրոպ Մաշտոց եկեղեցի', sub: '3D ճարտարապետական մոդել • 1996-2001 թթ.' }
 };
 
-// ============================================================
-// HERO 3D SCENE
-// ============================================================
+/* ============================================================
+   HERO 3D SCENE — complete
+   ============================================================ */
 let heroScene, heroRenderer, heroCamera, heroClock;
 let heroVisible = true;
+let heroParticles, heroCrossGroup;
+const heroRaycaster = new THREE.Raycaster();
 
 function initHero3D() {
   const canvas = document.getElementById('hero3dCanvas');
+  if (!canvas) return;
   const parent = canvas.parentElement;
   const w = parent.clientWidth, h = parent.clientHeight;
   if (w === 0 || h === 0) return;
 
   heroScene = new THREE.Scene();
+  heroScene.fog = new THREE.Fog(0xE0F2FE, 8, 22);
+
   heroCamera = new THREE.PerspectiveCamera(55, w / h, 0.1, 200);
   heroCamera.position.set(0, 0.5, 9);
 
   heroRenderer = new THREE.WebGLRenderer({
-    canvas,
-    alpha: true,
-    antialias: PERF.antialias,
-    powerPreference: 'high-performance'
+    canvas, alpha: true, antialias: PERF.antialias, powerPreference: 'high-performance'
   });
   heroRenderer.setSize(w, h);
   heroRenderer.setPixelRatio(PERF.pixelRatio);
 
-  // Lighting
   heroScene.add(new THREE.HemisphereLight(0xBAE6FD, 0xCBB58E, 0.55));
   const sun = new THREE.DirectionalLight(0xFBB936, 1.4);
   sun.position.set(5, 6, 5);
@@ -1654,599 +1543,549 @@ function initHero3D() {
   fill.position.set(0, 3, 3);
   heroScene.add(fill);
 
-  // Khachkar cross (detailed)
-  const crossGroup = new THREE.Group();
-  const goldMat = new THREE.MeshStandardMaterial({ color: 0xFBB936, metalness: 0.7, roughness: 0.3, emissive: 0x442200, emissiveIntensity: 0.1 });
+  // Central khachkar with detailed cross
+  heroCrossGroup = new THREE.Group();
+  const goldMat = new THREE.MeshStandardMaterial({ color: 0xFBB936, metalness: 0.78, roughness: 0.25, emissive: 0x442200, emissiveIntensity: 0.18 });
   const vBar = new THREE.Mesh(new THREE.BoxGeometry(0.5, 2.4, 0.35), goldMat);
   const hBar = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.5, 0.35), goldMat);
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.09, 12, 48), goldMat);
-  const ringInner = new THREE.Mesh(new THREE.TorusGeometry(0.75, 0.04, 10, 40), goldMat);
-  const sphereTop = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 12), goldMat);
-  sphereTop.position.y = 1.4;
-  crossGroup.add(vBar, hBar, ring, ringInner, sphereTop);
-  crossGroup.position.set(-3.3, 0.3, 0);
-  heroScene.add(crossGroup);
+  hBar.position.y = 0.45;
+  const hBar2 = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.35, 0.34), goldMat);
+  hBar2.position.y = 0.95;
+  const orb = new THREE.Mesh(new THREE.SphereGeometry(0.12, 10, 8), goldMat);
+  orb.position.y = 1.28;
+  const baseRing = new THREE.Mesh(new THREE.TorusGeometry(0.7, 0.08, 8, 32), goldMat);
+  baseRing.rotation.x = Math.PI / 2;
+  baseRing.position.y = -1.25;
+  const innerCross = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.15, 0.32), goldMat);
+  innerCross.position.set(0, 0.45, 0.15);
+  heroCrossGroup.add(vBar, hBar, hBar2, orb, baseRing, innerCross);
+  heroCrossGroup.position.y = 1.2;
+  heroScene.add(heroCrossGroup);
 
-  // Mountain with snow cap (Khustup)
-  const mountainGroup = new THREE.Group();
-  const mtnGeo = new THREE.ConeGeometry(1.3, 2.6, 6, 4);
-  const mp = mtnGeo.attributes.position;
-  for (let i = 0; i < mp.count; i++) {
-    const x = mp.getX(i), y = mp.getY(i), z = mp.getZ(i);
-    const noise = Math.sin(x * 4 + y * 2) * 0.08;
-    mp.setX(i, x + noise);
-    mp.setZ(i, z + noise);
+  // Floating Armenian-inspired diamonds
+  const diamondMat = new THREE.MeshStandardMaterial({ color: 0x0284C7, metalness: 0.3, roughness: 0.4, emissive: 0x0C4A6E, emissiveIntensity: 0.15 });
+  for (let i = 0; i < 8; i++) {
+    const d = new THREE.Mesh(new THREE.OctahedronGeometry(0.12 + Math.random() * 0.1, 0), diamondMat);
+    const a = (i / 8) * Math.PI * 2;
+    d.position.set(Math.cos(a) * 2.8, (Math.random() - 0.5) * 3, Math.sin(a) * 2.8);
+    d.userData = { a, speed: 0.3 + Math.random() * 0.4, radius: 2.8, baseY: d.position.y };
+    heroScene.add(d);
   }
-  mtnGeo.computeVertexNormals();
-  const mtnMat = new THREE.MeshStandardMaterial({ color: 0x6a7a8a, flatShading: true, roughness: 0.9 });
-  const mountain = new THREE.Mesh(mtnGeo, mtnMat);
-  // Snow cap
-  const snowGeo = new THREE.ConeGeometry(0.55, 0.9, 6, 1);
-  const snowMat = new THREE.MeshStandardMaterial({ color: 0xF0F5FA, roughness: 0.65 });
-  const snow = new THREE.Mesh(snowGeo, snowMat);
-  snow.position.y = 0.95;
-  mountainGroup.add(mountain, snow);
-  mountainGroup.position.set(3.2, -1.2, -1.5);
-  mountainGroup.rotation.y = Math.PI / 5;
-  heroScene.add(mountainGroup);
-
-  // Pomegranate (detailed)
-  const pomGroup = new THREE.Group();
-  const pomMat = new THREE.MeshStandardMaterial({ color: 0xD94B4B, roughness: 0.35, metalness: 0.25 });
-  const pomGeo = new THREE.SphereGeometry(0.75, 24, 24);
-  const pp = pomGeo.attributes.position;
-  for (let i = 0; i < pp.count; i++) {
-    const x = pp.getX(i), y = pp.getY(i), z = pp.getZ(i);
-    const r = Math.sqrt(x*x + y*y + z*z);
-    const noise = 1 + Math.sin(x * 8) * Math.cos(y * 8) * Math.sin(z * 8) * 0.03;
-    pp.setXYZ(i, x * noise, y * noise, z * noise);
-  }
-  pomGeo.computeVertexNormals();
-  const pom = new THREE.Mesh(pomGeo, pomMat);
-  // Crown (calyx)
-  const crown = new THREE.Group();
-  for (let i = 0; i < 6; i++) {
-    const a = (i / 6) * Math.PI * 2;
-    const spike = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.35, 4), new THREE.MeshStandardMaterial({ color: 0x8B2C2C, roughness: 0.7 }));
-    spike.position.set(Math.cos(a) * 0.15, 0.85, Math.sin(a) * 0.15);
-    spike.rotation.z = Math.cos(a) * -0.3;
-    spike.rotation.x = Math.sin(a) * 0.3;
-    crown.add(spike);
-  }
-  pomGroup.add(pom, crown);
-  pomGroup.position.set(1.6, 1.6, 1.2);
-  heroScene.add(pomGroup);
 
   // Particles
-  const count = PERF.particleCount;
-  const pos = new Float32Array(count * 3);
-  for (let i = 0; i < count * 3; i++) pos[i] = (Math.random() - 0.5) * 26;
+  const pCount = PERF.particleCount;
   const pGeo = new THREE.BufferGeometry();
-  pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  const pMat = new THREE.PointsMaterial({
-    color: 0xBAE6FD, size: PERF.isMobile ? 0.08 : 0.055,
-    transparent: true, opacity: 0.75, depthWrite: false
-  });
-  const particles = new THREE.Points(pGeo, pMat);
-  heroScene.add(particles);
-
-  let mx = 0, my = 0;
-  if (!PERF.isTouch) {
-    window.addEventListener('mousemove', e => {
-      mx = (e.clientX / window.innerWidth) * 2 - 1;
-      my = (e.clientY / window.innerHeight) * 2 - 1;
-    });
+  const pos = new Float32Array(pCount * 3);
+  for (let i = 0; i < pCount; i++) {
+    pos[i*3] = (Math.random() - 0.5) * 20;
+    pos[i*3+1] = (Math.random() - 0.5) * 12;
+    pos[i*3+2] = (Math.random() - 0.5) * 15;
   }
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const pMat = new THREE.PointsMaterial({ color: 0x38BDF8, size: 0.06, transparent: true, opacity: 0.7, sizeAttenuation: true });
+  heroParticles = new THREE.Points(pGeo, pMat);
+  heroScene.add(heroParticles);
 
   heroClock = new THREE.Clock();
-  (function animate() {
+
+  const resize = () => {
+    const w2 = parent.clientWidth, h2 = parent.clientHeight;
+    if (w2 === 0 || h2 === 0) return;
+    heroCamera.aspect = w2 / h2;
+    heroCamera.updateProjectionMatrix();
+    heroRenderer.setSize(w2, h2);
+  };
+  window.addEventListener('resize', resize);
+
+  const heroObserver = new IntersectionObserver(([entry]) => {
+    heroVisible = entry.isIntersecting;
+  }, { threshold: 0 });
+  heroObserver.observe(parent);
+
+  function animate() {
     requestAnimationFrame(animate);
-    if (!heroVisible) return;
+    if (!heroVisible || !heroRenderer) return;
     const t = heroClock.getElapsedTime();
-    crossGroup.rotation.y = t * 0.45;
-    crossGroup.position.y = 0.3 + Math.sin(t) * 0.18;
-    mountainGroup.rotation.y = Math.PI / 5 + t * 0.18;
-    mountainGroup.position.y = -1.2 + Math.sin(t + 1) * 0.12;
-    pomGroup.rotation.y = t * 0.35;
-    pomGroup.position.y = 1.6 + Math.sin(t * 0.85 + 2) * 0.18;
-    particles.rotation.y = t * 0.02;
-    particles.rotation.x = t * 0.008;
-    heroCamera.position.x += (mx * 1.6 - heroCamera.position.x) * 0.04;
-    heroCamera.position.y += (0.5 + (-my * 1.2) - heroCamera.position.y) * 0.04;
-    heroCamera.lookAt(0, 0, 0);
+    heroCrossGroup.rotation.y = t * 0.35;
+    heroCrossGroup.position.y = 1.2 + Math.sin(t * 0.8) * 0.08;
+    heroScene.children.forEach(c => {
+      if (c.userData && c.userData.radius) {
+        c.position.x = Math.cos(c.userData.a + t * c.userData.speed) * c.userData.radius;
+        c.position.z = Math.sin(c.userData.a + t * c.userData.speed) * c.userData.radius;
+        c.position.y = c.userData.baseY + Math.sin(t * 1.5 + c.userData.a) * 0.3;
+        c.rotation.x = t * 0.5;
+        c.rotation.y = t * 0.7;
+      }
+    });
+    if (heroParticles) {
+      heroParticles.rotation.y = t * 0.03;
+      heroParticles.material.opacity = 0.5 + Math.sin(t * 0.8) * 0.2;
+    }
+    heroCamera.position.x = Math.sin(t * 0.15) * 1.2;
+    heroCamera.lookAt(0, 0.5, 0);
     heroRenderer.render(heroScene, heroCamera);
-  })();
-
-  // ResizeObserver for responsive canvas
-  if (window.ResizeObserver) {
-    const ro = new ResizeObserver(() => {
-      const w2 = parent.clientWidth, h2 = parent.clientHeight;
-      if (w2 === 0 || h2 === 0) return;
-      heroCamera.aspect = w2 / h2;
-      heroCamera.updateProjectionMatrix();
-      heroRenderer.setSize(w2, h2);
-    });
-    ro.observe(parent);
-  } else {
-    window.addEventListener('resize', () => {
-      const w2 = parent.clientWidth, h2 = parent.clientHeight;
-      if (w2 === 0 || h2 === 0) return;
-      heroCamera.aspect = w2 / h2;
-      heroCamera.updateProjectionMatrix();
-      heroRenderer.setSize(w2, h2);
-    });
   }
-
-  new IntersectionObserver(entries => {
-    heroVisible = entries[0].isIntersecting;
-  }, { threshold: 0 }).observe(document.getElementById('top'));
+  animate();
 }
 
-// ============================================================
-// 3D LANDMARK VIEWER
-// ============================================================
-let viewer3D = { renderer: null, scene: null, camera: null, controls: null, clock: null, raf: null, running: false, ro: null };
+/* ============================================================
+   3D VIEWER — OrbitControls
+   ============================================================ */
+let viewerScene, viewerCamera, viewerRenderer, viewerControls, viewerModel;
+let viewerActive = false;
+let viewerAutoRotateOn = true;
+let viewerLoadingEl;
 
-function initViewer3DScene(buildFn) {
+function open3DViewer(id) {
+  const cfg = landmark3DMap[id];
+  if (!cfg) return;
+  const modal = document.getElementById('viewer3dModal');
+  document.getElementById('viewer3dTitle').textContent = cfg.title;
+  document.getElementById('viewer3dSubtitle').textContent = cfg.sub;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+  viewerLoadingEl = document.getElementById('viewer3dLoading');
+  viewerLoadingEl.style.opacity = '1';
+  SOUND.bell();
+  burstConfetti(120);
+
+  setTimeout(() => {
+    initViewer3D(cfg);
+    viewerLoadingEl.style.opacity = '0';
+  }, 350);
+}
+
+function initViewer3D(cfg) {
   const canvas = document.getElementById('viewer3dCanvas');
-  const container = canvas.parentElement;
-  const w = container.clientWidth, h = container.clientHeight;
+  const parent = canvas.parentElement;
+  const w = parent.clientWidth, h = parent.clientHeight;
 
-  // Dispose previous
-  if (viewer3D.renderer) {
-    viewer3D.running = false;
-    if (viewer3D.raf) cancelAnimationFrame(viewer3D.raf);
-    if (viewer3D.ro) viewer3D.ro.disconnect();
-    viewer3D.scene.traverse(o => {
+  if (viewerRenderer) { viewerRenderer.dispose(); viewerRenderer = null; }
+  if (viewerScene) {
+    viewerScene.traverse(o => {
       if (o.geometry) o.geometry.dispose();
       if (o.material) {
         if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
         else o.material.dispose();
       }
     });
-    viewer3D.renderer.dispose();
   }
 
-  viewer3D.scene = new THREE.Scene();
-  viewer3D.scene.background = new THREE.Color(0x0a1628);
-  viewer3D.scene.fog = new THREE.Fog(0x0a1628, 20, 45);
+  viewerScene = new THREE.Scene();
+  viewerScene.background = new THREE.Color(0x0a1628);
+  viewerScene.fog = new THREE.Fog(0x0a1628, 12, 26);
 
-  viewer3D.camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
-  viewer3D.camera.position.set(8, 5, 10);
-  viewer3D.camera.lookAt(0, 1.5, 0);
+  viewerCamera = new THREE.PerspectiveCamera(50, w / h, 0.1, 200);
+  viewerCamera.position.set(6, 5, 8);
 
-  viewer3D.renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: PERF.antialias,
-    powerPreference: 'high-performance'
+  viewerRenderer = new THREE.WebGLRenderer({
+    canvas, antialias: PERF.antialias, powerPreference: 'high-performance'
   });
-  viewer3D.renderer.setSize(w, h);
-  viewer3D.renderer.setPixelRatio(PERF.pixelRatio);
+  viewerRenderer.setSize(w, h);
+  viewerRenderer.setPixelRatio(PERF.pixelRatio);
+  viewerRenderer.shadowMap.enabled = PERF.shadows;
+  viewerRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  viewerRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+  viewerRenderer.toneMappingExposure = 1.1;
 
+  const hemi = new THREE.HemisphereLight(0xBAE6FD, 0x2a2015, 0.7);
+  viewerScene.add(hemi);
+
+  const key = new THREE.DirectionalLight(0xFBB936, 1.8);
+  key.position.set(6, 9, 6);
+  key.castShadow = PERF.shadows;
   if (PERF.shadows) {
-    viewer3D.renderer.shadowMap.enabled = true;
-    viewer3D.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    viewer3D.renderer.outputEncoding = THREE.sRGBEncoding;
-    viewer3D.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    viewer3D.renderer.toneMappingExposure = 1.05;
+    key.shadow.mapSize.width = PERF.shadowRes;
+    key.shadow.mapSize.height = PERF.shadowRes;
+    key.shadow.camera.near = 0.5;
+    key.shadow.camera.far = 40;
+    key.shadow.camera.left = -10;
+    key.shadow.camera.right = 10;
+    key.shadow.camera.top = 10;
+    key.shadow.camera.bottom = -10;
+    key.shadow.bias = -0.0005;
   }
+  viewerScene.add(key);
 
-  // === LIGHTING ===
-  viewer3D.scene.add(new THREE.HemisphereLight(0xBAE6FD, 0x3a3020, 0.4));
+  const fill = new THREE.DirectionalLight(0x38BDF8, 0.7);
+  fill.position.set(-5, 4, -3);
+  viewerScene.add(fill);
 
-  const sun = new THREE.DirectionalLight(0xfff2d0, 1.8);
-  sun.position.set(10, 15, 8);
-  if (PERF.shadows) {
-    sun.castShadow = true;
-    sun.shadow.mapSize.set(PERF.shadowRes, PERF.shadowRes);
-    sun.shadow.camera.left = -12;
-    sun.shadow.camera.right = 12;
-    sun.shadow.camera.top = 12;
-    sun.shadow.camera.bottom = -12;
-    sun.shadow.camera.near = 0.5;
-    sun.shadow.camera.far = 50;
-    sun.shadow.bias = -0.0005;
-    sun.shadow.normalBias = 0.02;
-  }
-  viewer3D.scene.add(sun);
+  const rim = new THREE.PointLight(0x0EA5E9, 1.2, 25);
+  rim.position.set(0, 4, -8);
+  viewerScene.add(rim);
 
-  const rim = new THREE.DirectionalLight(0x38BDF8, 1.2);
-  rim.position.set(-10, 6, -8);
-  viewer3D.scene.add(rim);
+  viewerModel = cfg.build();
+  viewerScene.add(viewerModel);
 
-  const fill = new THREE.PointLight(0xFBB936, 0.5, 40);
-  fill.position.set(-3, 4, 5);
-  viewer3D.scene.add(fill);
+  viewerControls = new THREE.OrbitControls(viewerCamera, canvas);
+  viewerControls.enableDamping = true;
+  viewerControls.dampingFactor = PERF.orbitDamping;
+  viewerControls.minDistance = 4;
+  viewerControls.maxDistance = 20;
+  viewerControls.maxPolarAngle = Math.PI / 2.05;
+  viewerControls.target.set(0, 1.5, 0);
+  viewerControls.autoRotate = viewerAutoRotateOn;
+  viewerControls.autoRotateSpeed = 0.8;
 
-  // === STARS ===
-  const starCount = PERF.isMobile ? 200 : 400;
-  const starPos = new Float32Array(starCount * 3);
-  for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 80;
-  const sg = new THREE.BufferGeometry();
-  sg.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-  viewer3D.scene.add(new THREE.Points(sg, new THREE.PointsMaterial({
-    color: 0xBAE6FD, size: 0.08, transparent: true, opacity: 0.8, depthWrite: false
-  })));
-
-  // === BUILD MODEL ===
-  const model = buildFn();
-  model.traverse(o => {
-    if (o.isMesh) {
-      o.castShadow = PERF.shadows;
-      o.receiveShadow = PERF.shadows;
-    }
-  });
-  viewer3D.scene.add(model);
-
-  // === CONTROLS ===
-  if (typeof THREE.OrbitControls !== 'undefined') {
-    viewer3D.controls = new THREE.OrbitControls(viewer3D.camera, viewer3D.renderer.domElement);
-    viewer3D.controls.enableDamping = true;
-    viewer3D.controls.dampingFactor = PERF.orbitDamping;
-    viewer3D.controls.minDistance = 6;
-    viewer3D.controls.maxDistance = 25;
-    viewer3D.controls.maxPolarAngle = Math.PI / 2 - 0.03;
-    viewer3D.controls.minPolarAngle = 0.1;
-    viewer3D.controls.target.set(0, 1.5, 0);
-    viewer3D.controls.autoRotate = true;
-    viewer3D.controls.autoRotateSpeed = PERF.isMobile ? 0.5 : 0.8;
-    viewer3D.controls.enablePan = false;
-    viewer3D.controls.touchRotate = true;
-    viewer3D.controls.touchZoom = true;
-    viewer3D.controls.update();
-  }
-
-  viewer3D.clock = new THREE.Clock();
-  viewer3D.running = true;
-
-  (function animate() {
-    if (!viewer3D.running) return;
-    viewer3D.raf = requestAnimationFrame(animate);
-    if (viewer3D.controls) viewer3D.controls.update();
-    viewer3D.renderer.render(viewer3D.scene, viewer3D.camera);
-  })();
-
-  // ResizeObserver for responsive
-  if (window.ResizeObserver) {
-    viewer3D.ro = new ResizeObserver(() => {
-      if (!viewer3D.running) return;
-      const w2 = container.clientWidth, h2 = container.clientHeight;
-      if (w2 === 0 || h2 === 0) return;
-      viewer3D.camera.aspect = w2 / h2;
-      viewer3D.camera.updateProjectionMatrix();
-      viewer3D.renderer.setSize(w2, h2);
-    });
-    viewer3D.ro.observe(container);
-  }
-
-  const loadingEl = document.getElementById('viewer3dLoading');
-  setTimeout(() => { loadingEl.style.opacity = '0'; }, 300);
+  viewerActive = true;
+  animateViewer();
 }
 
-function openViewer3D(siteId) {
-  const cfg = landmark3DMap[siteId];
-  if (!cfg) return;
-  document.getElementById('viewer3dTitle').textContent = cfg.title;
-  document.getElementById('viewer3dSubtitle').textContent = cfg.sub;
-  document.getElementById('viewer3dModal').classList.remove('hidden');
-  document.getElementById('viewer3dModal').classList.add('flex');
-  const loadingEl = document.getElementById('viewer3dLoading');
-  loadingEl.style.opacity = '1';
-  setTimeout(() => initViewer3DScene(cfg.build), 80);
-}
-
-function reset3DCamera() {
-  if (viewer3D.camera && viewer3D.controls) {
-    viewer3D.camera.position.set(8, 5, 10);
-    viewer3D.controls.target.set(0, 1.5, 0);
-    viewer3D.controls.update();
-  }
+function animateViewer() {
+  if (!viewerActive || !viewerRenderer) return;
+  requestAnimationFrame(animateViewer);
+  viewerControls.update();
+  viewerRenderer.render(viewerScene, viewerCamera);
 }
 
 function closeViewer3D() {
-  document.getElementById('viewer3dModal').classList.add('hidden');
-  document.getElementById('viewer3dModal').classList.remove('flex');
-  if (viewer3D.running) {
-    viewer3D.running = false;
-    if (viewer3D.raf) cancelAnimationFrame(viewer3D.raf);
+  const modal = document.getElementById('viewer3dModal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  document.body.style.overflow = '';
+  viewerActive = false;
+  if (viewerControls) { viewerControls.dispose(); viewerControls = null; }
+  if (viewerRenderer) { viewerRenderer.dispose(); viewerRenderer = null; }
+  if (viewerScene) {
+    viewerScene.traverse(o => {
+      if (o.geometry) o.geometry.dispose();
+      if (o.material) {
+        if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
+        else o.material.dispose();
+      }
+    });
+    viewerScene = null;
   }
 }
 
-document.getElementById('closeViewer3dBtn').addEventListener('click', closeViewer3D);
-document.getElementById('viewer3dModal').addEventListener('click', e => {
-  if (e.target.id === 'viewer3dModal') closeViewer3D();
-});
+window.viewerReset = function() {
+  if (!viewerCamera || !viewerControls) return;
+  viewerCamera.position.set(6, 5, 8);
+  viewerControls.target.set(0, 1.5, 0);
+  SOUND.click();
+};
+window.viewerAutoRotate = function() {
+  if (!viewerControls) return;
+  viewerAutoRotateOn = !viewerAutoRotateOn;
+  viewerControls.autoRotate = viewerAutoRotateOn;
+  const btn = document.getElementById('viewerAutoRotateBtn');
+  btn.style.background = viewerAutoRotateOn ? 'rgba(14,165,233,.35)' : '';
+  SOUND.click();
+};
+window.reset3DCamera = window.viewerReset;
 
-// ============================================================
-// RENOVATED CAROUSEL
-// ============================================================
-const trackEl = document.getElementById('renovatedTrack');
-const dotsEl = document.getElementById('renovatedDots');
-let currentSlideIndex = 0;
-let autoScrollEnabled = true;
-let autoScrollInterval = null;
+/* ============================================================
+   RENDER RENOVATED CARDS
+   ============================================================ */
+function renderRenovated() {
+  const track = document.getElementById('renovatedTrack');
+  const dots = document.getElementById('renovatedDots');
+  if (!track) return;
+  track.innerHTML = renovatedPlaces.map((p, i) => `
+    <article class="renovated-card snap-center flex-shrink-0 w-[300px] sm:w-[360px] bg-white rounded-3xl overflow-hidden border border-sand-200 shadow-beige cursor-pointer" data-idx="${i}" role="button" tabindex="0">
+      <div class="relative h-52 overflow-hidden bg-skybrand-100">
+        <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" loading="lazy" onerror="this.src='${createFallbackIllustration(p.badge, p.summary, p.variant)}'">
+        <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[11px] font-bold text-skybrand-700 shadow-sm">${p.badge}</span>
+      </div>
+      <div class="p-5">
+        <h3 class="font-serif font-bold text-lg text-slate-900 leading-snug mb-2">${p.title}</h3>
+        <p class="text-slate-600 text-sm leading-relaxed mb-4">${p.summary}</p>
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          ${p.improvements.map(x => `<span class="text-[10px] font-semibold px-2 py-1 rounded-full bg-skybrand-50 border border-skybrand-200 text-skybrand-700">${x}</span>`).join('')}
+        </div>
+        <div class="flex items-center gap-1.5 text-skybrand-600 text-xs font-semibold">
+          <span>Կարդալ ավելին</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </article>
+  `).join('');
+  dots.innerHTML = renovatedPlaces.map((_, i) => `<button class="w-2.5 h-2.5 rounded-full transition-all" data-dot="${i}" style="background:${i===0?'#0284C7':'#CBD5E1'};width:${i===0?'20px':'10px'}" aria-label="Գնալ ${i+1}"></button>`).join('');
 
-function renderRenovatedCarousel() {
-  trackEl.innerHTML = renovatedPlaces.map((item, idx) => {
-    const fallback = createFallbackIllustration(item.title, item.badge, item.variant);
-    return `
-      <article data-index="${idx}" class="renovated-card tilt-card snap-start flex-shrink-0 w-[85vw] sm:w-[370px] lg:w-[400px] bg-sand-50 hover:bg-white border border-sand-200 hover:border-skybrand-300 rounded-3xl overflow-hidden shadow-beige hover:shadow-soft transition-all duration-300 flex flex-col justify-between group cursor-pointer" onclick="openRenovatedModal(${idx})">
-        <div class="tilt-inner">
-          <div class="relative h-52 sm:h-56 overflow-hidden bg-skybrand-100">
-            <img src="${item.image}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='${fallback}';" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
-            <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-skybrand-700 font-bold text-xs shadow-sm">${item.badge}</span>
-            <span class="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-slate-900/75 text-white text-[11px] font-semibold">${idx + 1} / 10</span>
+  track.querySelectorAll('.renovated-card').forEach(card => {
+    card.addEventListener('click', () => openRenovatedModal(+card.dataset.idx));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openRenovatedModal(+card.dataset.idx); } });
+  });
+  dots.querySelectorAll('[data-dot]').forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = +dot.dataset.dot;
+      track.scrollTo({ left: idx * (track.querySelector('.renovated-card').offsetWidth + 20), behavior: 'smooth' });
+    });
+  });
+
+  // Update active dot on scroll
+  track.addEventListener('scroll', () => {
+    const cardW = track.querySelector('.renovated-card')?.offsetWidth + 20 || 1;
+    const idx = Math.round(track.scrollLeft / cardW);
+    dots.querySelectorAll('[data-dot]').forEach((d, i) => {
+      d.style.background = i === idx ? '#0284C7' : '#CBD5E1';
+      d.style.width = i === idx ? '20px' : '10px';
+    });
+  }, { passive: true });
+}
+
+function openRenovatedModal(idx) {
+  const p = renovatedPlaces[idx];
+  const modal = document.getElementById('lightboxModal');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <div class="relative h-64 sm:h-80 bg-skybrand-100">
+      <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover" onerror="this.src='${createFallbackIllustration(p.badge, p.summary, p.variant)}'">
+    </div>
+    <div class="p-6 sm:p-8">
+      <span class="inline-block px-3 py-1 rounded-full bg-skybrand-50 border border-skybrand-200 text-skybrand-700 text-xs font-bold mb-3">${p.badge}</span>
+      <h3 class="font-serif font-bold text-2xl text-slate-900 mb-3">${p.title}</h3>
+      <p class="text-slate-600 leading-relaxed mb-5">${p.details}</p>
+      <div class="grid grid-cols-3 gap-2">
+        ${p.improvements.map(x => `<div class="text-center p-2.5 rounded-xl bg-sand-50 border border-sand-200"><span class="text-[11px] font-semibold text-slate-700">${x}</span></div>`).join('')}
+      </div>
+    </div>
+  `;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+  SOUND.click();
+}
+function closeModal() {
+  document.getElementById('lightboxModal').classList.add('hidden');
+  document.getElementById('lightboxModal').classList.remove('flex');
+  document.body.style.overflow = '';
+}
+
+/* ============================================================
+   RENDER SACRED LANDMARKS
+   ============================================================ */
+function renderLandmarks() {
+  const container = document.getElementById('landmarksContainer');
+  if (!container) return;
+  container.innerHTML = sacredLandmarks.map((l, i) => `
+    <article class="landmark-card reveal" data-landmark="${l.id}" data-reveal>
+      <div class="bg-white rounded-3xl overflow-hidden border border-sand-200 shadow-soft">
+        <div class="grid lg:grid-cols-2 gap-0">
+          <div class="relative h-64 sm:h-80 lg:h-auto lg:min-h-[480px] overflow-hidden bg-skybrand-100">
+            <img id="main-img-${l.id}" src="${l.photos[0].url}" alt="${l.title}" class="w-full h-full object-cover" loading="lazy" onerror="this.src='${createFallbackIllustration(l.title, l.category, l.variant)}'">
+            <div class="absolute top-4 left-4 flex items-center gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-skybrand-600 text-white text-xs font-bold shadow-lg">${l.number}</span>
+            </div>
+            <div class="absolute bottom-3 left-3 right-3 flex gap-2">
+              ${l.photos.map((ph, j) => `<button class="gallery-thumb flex-1 h-14 rounded-lg overflow-hidden border-2 ${j===0?'border-skybrand-500':'border-white/60'} hover:border-skybrand-400 transition" data-landmark="${l.id}" data-photo="${j}" aria-label="${ph.caption}"><img src="${ph.url}" class="w-full h-full object-cover" alt="" onerror="this.src='${createFallbackIllustration(l.title,'',l.variant)}'"></button>`).join('')}
+            </div>
           </div>
-          <div class="p-5 sm:p-6">
-            <h3 class="font-serif font-bold text-lg sm:text-xl text-slate-900 group-hover:text-skybrand-700 transition mb-2.5 leading-snug">${item.title}</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">${item.summary}</p>
-            <div class="flex flex-wrap gap-1.5">
-              ${item.improvements.map(t => `<span class="px-2.5 py-1 rounded-lg bg-skybrand-50 text-skybrand-700 border border-skybrand-200/70 text-[11px] font-semibold">✓ ${t}</span>`).join('')}
+          <div class="p-6 sm:p-8 flex flex-col">
+            <div class="text-skybrand-600 text-xs font-bold uppercase tracking-wider mb-2">${l.category}</div>
+            <h3 class="font-serif font-bold text-2xl sm:text-3xl text-slate-900 mb-2 leading-tight">${l.title}</h3>
+            <div class="flex items-start gap-2 text-slate-500 text-sm mb-4">
+              <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>${l.location}</span>
+            </div>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">${l.shortDesc}</p>
+            <div class="flex flex-wrap gap-1.5 mb-5">
+              ${l.highlights.map(h => `<span class="text-[10px] font-semibold px-2 py-1 rounded-full bg-skybrand-50 border border-skybrand-200 text-skybrand-700">${h}</span>`).join('')}
+            </div>
+            <div class="mt-auto flex flex-wrap gap-2.5">
+              <button class="open-3d-btn ripple-btn px-5 py-3 rounded-xl bg-gradient-to-r from-skybrand-600 to-skybrand-700 hover:from-skybrand-700 hover:to-skybrand-800 text-white font-semibold text-sm shadow-md shadow-skybrand-500/30 transition flex items-center gap-2" data-landmark="${l.id}">
+                <span>🏛️</span><span>Դիտել 3D մոդելը</span>
+              </button>
+              <button class="open-history-btn ripple-btn px-4 py-3 rounded-xl bg-white hover:bg-sand-100 text-slate-700 border border-sand-300 font-semibold text-sm transition" data-landmark="${l.id}">
+                📜 Պատմություն
+              </button>
             </div>
           </div>
         </div>
-        <div class="px-5 sm:px-6 pb-5 pt-2 flex items-center justify-between border-t border-sand-200/60 text-xs font-semibold text-skybrand-600">
-          <span>Կարդալ ավելին</span>
-          <span class="w-7 h-7 rounded-full bg-skybrand-100 group-hover:bg-skybrand-600 group-hover:text-white flex items-center justify-center transition transform group-hover:translate-x-1">→</span>
-        </div>
-      </article>`;
-  }).join('');
-
-  dotsEl.innerHTML = renovatedPlaces.map((_, idx) => `
-    <button type="button" aria-label="Անցնել ${idx + 1}-րդին" onclick="scrollToRenovatedCard(${idx})" class="renovated-dot h-2.5 rounded-full transition-all duration-300 ${idx === 0 ? 'w-8 bg-skybrand-600' : 'w-2.5 bg-sand-300 hover:bg-skybrand-400'}"></button>
+      </div>
+    </article>
   `).join('');
 
-  initTiltCards();
-}
-
-function initTiltCards() {
-  if (PERF.isTouch || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-  document.querySelectorAll('.tilt-card').forEach(card => {
-    if (card._tiltBound) return;
-    card._tiltBound = true;
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = e.clientX - r.left, y = e.clientY - r.top;
-      const cx = r.width / 2, cy = r.height / 2;
-      const rx = (y - cy) / 22;
-      const ry = (cx - x) / 22;
-      card.style.transform = `perspective(1000px) rotateX(${-rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+  container.querySelectorAll('.gallery-thumb').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.landmark;
+      const idx = +btn.dataset.photo;
+      const lm = sacredLandmarks.find(x => x.id === id);
+      const mainImg = document.getElementById('main-img-' + id);
+      if (mainImg && lm.photos[idx]) {
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+          mainImg.src = lm.photos[idx].url;
+          mainImg.style.opacity = '1';
+        }, 200);
+      }
+      btn.closest('.relative').querySelectorAll('.gallery-thumb').forEach(b => {
+        b.classList.toggle('border-skybrand-500', b === btn);
+        b.classList.toggle('border-white/60', b !== btn);
+      });
+      SOUND.hover();
     });
-    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
   });
-}
 
-function updateActiveDot(index) {
-  currentSlideIndex = index;
-  document.querySelectorAll('.renovated-dot').forEach((dot, i) => {
-    if (i === index) { dot.classList.remove('w-2.5', 'bg-sand-300'); dot.classList.add('w-8', 'bg-skybrand-600'); }
-    else { dot.classList.remove('w-8', 'bg-skybrand-600'); dot.classList.add('w-2.5', 'bg-sand-300'); }
+  container.querySelectorAll('.open-3d-btn').forEach(btn => {
+    btn.addEventListener('click', () => open3DViewer(btn.dataset.landmark));
   });
-}
 
-function scrollToRenovatedCard(index) {
-  const cards = trackEl.querySelectorAll('.renovated-card');
-  if (!cards[index]) return;
-  const targetLeft = cards[index].offsetLeft - trackEl.offsetLeft;
-  trackEl.scrollTo({ left: targetLeft, behavior: 'smooth' });
-  updateActiveDot(index);
-}
-
-document.getElementById('scrollLeftBtn').addEventListener('click', () => {
-  scrollToRenovatedCard((currentSlideIndex - 1 + renovatedPlaces.length) % renovatedPlaces.length);
-});
-document.getElementById('scrollRightBtn').addEventListener('click', () => {
-  scrollToRenovatedCard((currentSlideIndex + 1) % renovatedPlaces.length);
-});
-
-trackEl.addEventListener('scroll', () => {
-  const cards = trackEl.querySelectorAll('.renovated-card');
-  if (!cards.length) return;
-  const cardWidth = cards[0].offsetWidth + 20;
-  const idx = Math.min(renovatedPlaces.length - 1, Math.max(0, Math.round(trackEl.scrollLeft / cardWidth)));
-  if (idx !== currentSlideIndex) updateActiveDot(idx);
-}, { passive: true });
-
-function startAutoScroll() {
-  stopAutoScroll();
-  autoScrollInterval = setInterval(() => {
-    if (!autoScrollEnabled) return;
-    scrollToRenovatedCard((currentSlideIndex + 1) % renovatedPlaces.length);
-  }, 4500);
-}
-function stopAutoScroll() { if (autoScrollInterval) clearInterval(autoScrollInterval); }
-document.getElementById('toggleAutoScrollBtn').addEventListener('click', () => {
-  autoScrollEnabled = !autoScrollEnabled;
-  document.getElementById('autoScrollIcon').textContent = autoScrollEnabled ? '⏸' : '▶';
-  document.getElementById('autoScrollLabel').textContent = autoScrollEnabled ? 'Ավտո-թերթում' : 'Միացնել ավտո';
-  if (autoScrollEnabled) startAutoScroll(); else stopAutoScroll();
-});
-trackEl.addEventListener('mouseenter', () => { autoScrollEnabled = false; });
-trackEl.addEventListener('mouseleave', () => {
-  if (document.getElementById('autoScrollIcon').textContent === '⏸') autoScrollEnabled = true;
-});
-
-// ============================================================
-// LANDMARKS RENDER
-// ============================================================
-const landmarksContainer = document.getElementById('landmarksContainer');
-const landmarkPhotoState = { vahanavank: 0, baghaberd: 0, halidzor: 0, mashtots: 0 };
-
-function renderLandmarks(filter = 'all') {
-  const filtered = filter === 'all' ? sacredLandmarks : sacredLandmarks.filter(s => s.id === filter);
-
-  landmarksContainer.innerHTML = filtered.map((site, idx) => {
-    const activeIdx = landmarkPhotoState[site.id] || 0;
-    const currentPhoto = site.photos[activeIdx];
-    const fallback = createFallbackIllustration(site.title, site.category, site.variant);
-    const reversed = idx % 2 === 1;
-
-    return `
-      <article id="site-${site.id}" class="reveal-scale bg-white border border-sand-200 rounded-3xl p-5 sm:p-8 lg:p-10 shadow-soft transition-all" data-reveal>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          <div class="lg:col-span-7 ${reversed ? 'lg:order-2' : ''}">
-            <div class="relative rounded-2xl overflow-hidden bg-sand-100 border border-sand-200 aspect-[16/10] group">
-              <img id="main-img-${site.id}" src="${currentPhoto.url}" alt="${currentPhoto.caption}" onerror="this.onerror=null; this.src='${fallback}';" onclick="openLandmarkPhotoModal('${site.id}')" class="fade-img w-full h-full object-cover cursor-zoom-in transition-transform duration-700 group-hover:scale-105"/>
-              <div class="absolute top-3.5 left-3.5 flex items-center gap-2">
-                <span class="px-3 py-1 rounded-full bg-skybrand-600 text-white text-xs font-bold shadow">#${site.number}</span>
-                <span id="counter-${site.id}" class="px-3 py-1 rounded-full bg-slate-900/75 backdrop-blur-sm text-white text-xs font-semibold">Լուսանկար ${activeIdx + 1} / ${site.photos.length}</span>
-              </div>
-              <button type="button" onclick="openViewer3D('${site.id}')" class="glow-ring absolute top-3.5 right-3.5 px-3 py-1.5 rounded-full bg-skybrand-600 hover:bg-skybrand-700 text-white text-xs font-bold shadow-md transition flex items-center gap-1" title="Դիտել 3D մոդելը"><span>🧊</span><span class="hidden sm:inline">3D-ում</span></button>
-              <button type="button" aria-label="Նախորդ" onclick="changeLandmarkPhoto('${site.id}', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 hover:bg-skybrand-600 text-slate-800 hover:text-white shadow-md flex items-center justify-center transition active:scale-95"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
-              <button type="button" aria-label="Հաջորդ" onclick="changeLandmarkPhoto('${site.id}', 1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 hover:bg-skybrand-600 text-slate-800 hover:text-white shadow-md flex items-center justify-center transition active:scale-95"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>
-              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/85 via-slate-900/50 to-transparent p-4 pt-8">
-                <p id="caption-${site.id}" class="text-white text-xs sm:text-sm font-medium">${currentPhoto.caption}</p>
-              </div>
-            </div>
-            <div class="mt-3.5 grid grid-cols-3 gap-2.5 sm:gap-3.5">
-              ${site.photos.map((photo, pIdx) => {
-                const thumbFallback = createFallbackIllustration(site.title, `Տեսարան ${pIdx+1}`, site.variant);
-                const sel = pIdx === activeIdx;
-                return `<button type="button" id="thumb-${site.id}-${pIdx}" onclick="setLandmarkPhoto('${site.id}', ${pIdx})" class="relative rounded-xl overflow-hidden aspect-[16/10] border-2 transition-all ${sel ? 'border-skybrand-600 ring-2 ring-skybrand-300 scale-[1.01]' : 'border-transparent opacity-70 hover:opacity-100'}"><img src="${photo.url}" alt="Մանրապատկեր ${pIdx+1}" onerror="this.onerror=null; this.src='${thumbFallback}';" class="w-full h-full object-cover"/><span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded bg-slate-900/75 text-white text-[10px] font-bold">${pIdx+1}/3</span></button>`;
-              }).join('')}
-            </div>
-          </div>
-          <div class="lg:col-span-5 ${reversed ? 'lg:order-1' : ''}">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sand-100 border border-sand-300 text-slate-700 text-xs font-semibold mb-3">${site.category}</div>
-            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mb-2 leading-tight">${site.title}</h3>
-            <div class="flex items-start gap-2 text-xs sm:text-sm text-skybrand-700 font-medium mb-4"><span>📍</span><span>${site.location}</span></div>
-            <p class="text-slate-700 text-sm sm:text-base font-medium leading-relaxed mb-4 bg-skybrand-50/60 border-l-4 border-skybrand-500 p-3.5 rounded-r-xl">${site.shortDesc}</p>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">${site.fullHistory}</p>
-            <details class="group bg-sand-50 border border-sand-200 rounded-2xl p-4 mb-5">
-              <summary class="flex items-center justify-between cursor-pointer font-semibold text-sm text-slate-800 list-none">
-                <span class="flex items-center gap-2"><span class="text-skybrand-600">🏛️</span><span>Ճարտարապետական առանձնահատկություններ</span></span>
-                <span class="text-skybrand-600 transition-transform duration-200 group-open:rotate-180">▼</span>
-              </summary>
-              <p class="mt-3 pt-3 border-t border-sand-200 text-slate-600 text-xs sm:text-sm leading-relaxed">${site.architectureNotes}</p>
-            </details>
-            <div class="flex flex-wrap gap-2 mb-5">
-              ${site.highlights.map(h => `<span class="px-3 py-1.5 rounded-xl bg-white border border-sand-300 text-slate-700 text-xs font-semibold">✦ ${h}</span>`).join('')}
-            </div>
-            <button type="button" onclick="openViewer3D('${site.id}')" class="ripple-btn w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-skybrand-600 to-skybrand-700 hover:from-skybrand-700 hover:to-skybrand-900 text-white font-bold text-sm shadow-md shadow-skybrand-500/30 transition inline-flex items-center justify-center gap-2">
-              <span class="text-lg">🧊</span><span>Դիտել 3D մոդելը</span>
-            </button>
-          </div>
-        </div>
-      </article>`;
-  }).join('');
-
-  setTimeout(() => {
-    landmarksContainer.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
-  }, 50);
-}
-
-function setLandmarkPhoto(siteId, photoIdx) {
-  const site = sacredLandmarks.find(s => s.id === siteId);
-  if (!site) return;
-  landmarkPhotoState[siteId] = photoIdx;
-  const photo = site.photos[photoIdx];
-  const fallback = createFallbackIllustration(site.title, photo.caption, site.variant);
-  const img = document.getElementById(`main-img-${siteId}`);
-  const counter = document.getElementById(`counter-${siteId}`);
-  const caption = document.getElementById(`caption-${siteId}`);
-  if (img) {
-    img.style.opacity = '0.35';
-    setTimeout(() => {
-      img.onerror = function() { this.onerror = null; this.src = fallback; };
-      img.src = photo.url; img.alt = photo.caption; img.style.opacity = '1';
-    }, 140);
-  }
-  if (counter) counter.textContent = `Լուսանկար ${photoIdx + 1} / ${site.photos.length}`;
-  if (caption) caption.textContent = photo.caption;
-  site.photos.forEach((_, idx) => {
-    const t = document.getElementById(`thumb-${siteId}-${idx}`);
-    if (!t) return;
-    if (idx === photoIdx) { t.classList.add('border-skybrand-600','ring-2','ring-skybrand-300','scale-[1.01]'); t.classList.remove('border-transparent','opacity-70'); }
-    else { t.classList.remove('border-skybrand-600','ring-2','ring-skybrand-300','scale-[1.01]'); t.classList.add('border-transparent','opacity-70'); }
+  container.querySelectorAll('.open-history-btn').forEach(btn => {
+    btn.addEventListener('click', () => openHistoryModal(btn.dataset.landmark));
   });
+
+  document.querySelectorAll('.landmark-card').forEach(el => revealObserver.observe(el));
 }
 
-function changeLandmarkPhoto(siteId, delta) {
-  const site = sacredLandmarks.find(s => s.id === siteId);
-  if (!site) return;
-  const cur = landmarkPhotoState[siteId] || 0;
-  setLandmarkPhoto(siteId, (cur + delta + site.photos.length) % site.photos.length);
+function openHistoryModal(id) {
+  const lm = sacredLandmarks.find(x => x.id === id);
+  if (!lm) return;
+  const modal = document.getElementById('lightboxModal');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <div class="relative h-56 sm:h-72 bg-skybrand-100">
+      <img src="${lm.photos[0].url}" alt="${lm.title}" class="w-full h-full object-cover" onerror="this.src='${createFallbackIllustration(lm.title, lm.category, lm.variant)}'">
+    </div>
+    <div class="p-6 sm:p-8 max-h-[55vh] overflow-y-auto">
+      <span class="inline-block px-3 py-1 rounded-full bg-skybrand-50 border border-skybrand-200 text-skybrand-700 text-xs font-bold mb-3">${lm.category}</span>
+      <h3 class="font-serif font-bold text-2xl text-slate-900 mb-2">${lm.title}</h3>
+      <p class="text-slate-500 text-sm mb-4">📍 ${lm.location}</p>
+      <h4 class="font-semibold text-slate-800 mb-2">Պատմություն</h4>
+      <p class="text-slate-600 leading-relaxed mb-4 text-sm">${lm.fullHistory}</p>
+      <h4 class="font-semibold text-slate-800 mb-2">Ճարտարապետություն</h4>
+      <p class="text-slate-600 leading-relaxed text-sm">${lm.architectureNotes}</p>
+    </div>
+  `;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+  SOUND.click();
 }
 
+/* ============================================================
+   FILTERS
+   ============================================================ */
 document.querySelectorAll('.landmark-filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.landmark-filter-btn').forEach(b => {
-      b.classList.remove('bg-skybrand-600', 'text-white');
-      b.classList.add('bg-white', 'text-slate-700', 'border', 'border-sand-300');
+      b.classList.remove('active');
+      b.style.background = '';
+      b.style.color = '';
     });
-    btn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-sand-300');
-    btn.classList.add('bg-skybrand-600', 'text-white');
-    renderLandmarks(btn.dataset.filter);
+    btn.classList.add('active');
+    btn.style.background = '#0284C7';
+    btn.style.color = 'white';
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.landmark-card').forEach(card => {
+      const match = filter === 'all' || card.dataset.landmark === filter;
+      card.dataset.hidden = match ? 'false' : 'true';
+      if (match) { card.classList.add('visible'); }
+    });
+    SOUND.click();
   });
 });
 
-// ============================================================
-// LIGHTBOX
-// ============================================================
-const modalEl = document.getElementById('lightboxModal');
-const modalContentEl = document.getElementById('modalContent');
-
-function openRenovatedModal(idx) {
-  const item = renovatedPlaces[idx];
-  const fallback = createFallbackIllustration(item.title, item.badge, item.variant);
-  modalContentEl.innerHTML = `
-    <div class="relative h-64 sm:h-80 bg-sand-100">
-      <img src="${item.image}" alt="${item.title}" onerror="this.onerror=null; this.src='${fallback}';" class="w-full h-full object-cover"/>
-      <span class="absolute bottom-4 left-4 px-3.5 py-1.5 rounded-full bg-skybrand-600 text-white text-xs font-bold shadow">${item.badge}</span>
-    </div>
-    <div class="p-6 sm:p-8 bg-white">
-      <h3 class="font-serif text-2xl font-bold text-slate-900 mb-3">${item.title}</h3>
-      <p class="text-slate-700 text-sm sm:text-base leading-relaxed mb-5">${item.details}</p>
-      <div class="flex flex-wrap gap-2">
-        ${item.improvements.map(t => `<span class="px-3 py-1.5 rounded-xl bg-sand-100 border border-sand-300 text-slate-800 text-xs font-semibold">✓ ${t}</span>`).join('')}
-      </div>
-    </div>`;
-  modalEl.classList.remove('hidden'); modalEl.classList.add('flex');
+/* ============================================================
+   AUTO-SCROLL
+   ============================================================ */
+let autoScrollTimer = null;
+let autoScrollOn = true;
+function startAutoScroll() {
+  stopAutoScroll();
+  autoScrollTimer = setInterval(() => {
+    const track = document.getElementById('renovatedTrack');
+    if (!track) return;
+    const card = track.querySelector('.renovated-card');
+    if (!card) return;
+    const step = card.offsetWidth + 20;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    if (track.scrollLeft >= maxScroll - 10) track.scrollTo({ left: 0, behavior: 'smooth' });
+    else track.scrollBy({ left: step, behavior: 'smooth' });
+  }, 4200);
 }
-
-function openLandmarkPhotoModal(siteId) {
-  const site = sacredLandmarks.find(s => s.id === siteId);
-  if (!site) return;
-  const pIdx = landmarkPhotoState[siteId] || 0;
-  const photo = site.photos[pIdx];
-  const fallback = createFallbackIllustration(site.title, photo.caption, site.variant);
-  modalContentEl.innerHTML = `
-    <div class="relative bg-slate-950 flex items-center justify-center max-h-[75vh]">
-      <img src="${photo.url}" alt="${photo.caption}" onerror="this.onerror=null; this.src='${fallback}';" class="max-h-[70vh] w-auto object-contain"/>
-    </div>
-    <div class="p-5 sm:p-6 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-      <div>
-        <span class="text-xs font-bold text-skybrand-600 uppercase">${site.title} • Լուսանկար ${pIdx + 1}/${site.photos.length}</span>
-        <p class="text-slate-800 font-medium text-sm sm:text-base mt-1">${photo.caption}</p>
-      </div>
-      <div class="flex items-center gap-2 flex-shrink-0">
-        <button type="button" onclick="changeLandmarkPhoto('${site.id}', -1); openLandmarkPhotoModal('${site.id}');" class="px-3.5 py-2 rounded-xl bg-sand-100 hover:bg-sand-200 text-slate-800 text-xs font-bold">← Նախորդ</button>
-        <button type="button" onclick="changeLandmarkPhoto('${site.id}', 1); openLandmarkPhotoModal('${site.id}');" class="px-3.5 py-2 rounded-xl bg-skybrand-600 hover:bg-skybrand-700 text-white text-xs font-bold">Հաջորդ →</button>
-      </div>
-    </div>`;
-  modalEl.classList.remove('hidden'); modalEl.classList.add('flex');
+function stopAutoScroll() {
+  if (autoScrollTimer) { clearInterval(autoScrollTimer); autoScrollTimer = null; }
 }
+document.getElementById('toggleAutoScrollBtn')?.addEventListener('click', () => {
+  autoScrollOn = !autoScrollOn;
+  if (autoScrollOn) { startAutoScroll(); document.getElementById('autoScrollIcon').textContent = '⏸'; document.getElementById('autoScrollLabel').textContent = 'Կանգնեցնել'; }
+  else { stopAutoScroll(); document.getElementById('autoScrollIcon').textContent = '▶'; document.getElementById('autoScrollLabel').textContent = 'Միացնել'; }
+});
+document.getElementById('scrollLeftBtn')?.addEventListener('click', () => {
+  const track = document.getElementById('renovatedTrack');
+  const card = track.querySelector('.renovated-card');
+  track.scrollBy({ left: -(card.offsetWidth + 20), behavior: 'smooth' });
+});
+document.getElementById('scrollRightBtn')?.addEventListener('click', () => {
+  const track = document.getElementById('renovatedTrack');
+  const card = track.querySelector('.renovated-card');
+  track.scrollBy({ left: card.offsetWidth + 20, behavior: 'smooth' });
+});
 
-function closeModal() { modalEl.classList.add('hidden'); modalEl.classList.remove('flex'); }
+/* ============================================================
+   SOUND TOGGLE
+   ============================================================ */
+const soundToggle = document.getElementById('soundToggle');
+soundToggle.addEventListener('click', () => {
+  const on = SOUND.toggle();
+  soundToggle.classList.toggle('active', on);
+  document.getElementById('soundOffIcon').classList.toggle('hidden', on);
+  document.getElementById('soundOnIcon').classList.toggle('hidden', !on);
+  toast(on ? '🔊 Ձայնը միացված է' : '🔇 Ձայնը անջատված է');
+});
+
+/* ============================================================
+   CINEMA MODE
+   ============================================================ */
+document.getElementById('cinemaToggle').addEventListener('click', () => {
+  document.body.classList.toggle('cinema-mode');
+  toast(document.body.classList.contains('cinema-mode') ? '🎬 Կինո ռեժիմը միացված է' : '🎬 Սովորական ռեժիմ');
+  SOUND.click();
+});
+
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  backToTop.classList.toggle('show', window.scrollY > 500);
+}, { passive: true });
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ============================================================
+   MODAL CLOSE
+   ============================================================ */
 document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-modalEl.addEventListener('click', e => { if (e.target === modalEl) closeModal(); });
+document.getElementById('lightboxModal').addEventListener('click', e => { if (e.target.id === 'lightboxModal') closeModal(); });
+document.getElementById('closeViewer3dBtn').addEventListener('click', closeViewer3D);
+document.getElementById('viewer3dModal').addEventListener('click', e => { if (e.target.id === 'viewer3dModal') closeViewer3D(); });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    if (!modalEl.classList.contains('hidden')) closeModal();
-    if (!document.getElementById('viewer3dModal').classList.contains('hidden')) closeViewer3D();
+    closeModal();
+    closeViewer3D();
   }
 });
 
-// ============================================================
-// INIT
-// ============================================================
-window.addEventListener('DOMContentLoaded', () => {
-  renderRenovatedCarousel();
-  renderLandmarks('all');
-  startAutoScroll();
-  if (window.THREE) initHero3D();
-});
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+function init() {
+  try { renderRenovated(); } catch(e){ console.error('renderRenovated', e); }
+  try { renderLandmarks(); } catch(e){ console.error('renderLandmarks', e); }
+  try { startAutoScroll(); } catch(e){ console.error('autoscroll', e); }
+  try {
+    if (document.getElementById('hero3dCanvas')) initHero3D();
+  } catch(e){ console.error('hero3d', e); }
+  // First sound trigger on user gesture
+  const activate = () => {
+    document.removeEventListener('click', activate);
+    document.removeEventListener('touchstart', activate);
+    document.removeEventListener('keydown', activate);
+  };
+  document.addEventListener('click', activate, { once: true });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
+
+// Welcome toast
+setTimeout(() => {
+  toast('👋 Բարի գալուստ Կապան • Սեղմիր 🔊 ձայնը միացնելու համար', 4200);
+}, 1800);
 </script>
 </body>
 </html>
